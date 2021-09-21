@@ -10,6 +10,8 @@ namespace FileWatcher
     {
         static void Main(string[] args)
         {
+            FileWatcher.ChangeWatcher changeWatcher = new ChangeWatcher();
+            changeWatcher.run();
         }
     }
 }
