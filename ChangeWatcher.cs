@@ -10,6 +10,11 @@ namespace FileWatcher
     class ChangeWatcher
     {
         private string path = @"C:\Users\sowoo\Desktop\FileChangeDataset";
+        private int count = 0;
+        private bool isFirst = true;
+
+        private DateTime startTime;
+        private DateTime endTime;
 
         public void run()
         {
@@ -37,35 +42,36 @@ namespace FileWatcher
             Console.ReadLine();
         }
 
-        private static void OnChanged(object sender, FileSystemEventArgs e)
+        void OnChanged(object sender, FileSystemEventArgs e)
         {
             if (e.ChangeType != WatcherChangeTypes.Changed)
             {
                 return;
             }
-            Console.WriteLine($"Changed: {e.FullPath} - time: {DateTime.Now.ToString()}");
+            //Console.WriteLine($"Changed: {e.FullPath} - time: {DateTime.Now.ToString()}");
+            Console.WriteLine($"Changed: {e.Name}");
         }
 
-        private static void OnCreated(object sender, FileSystemEventArgs e)
+        private void OnCreated(object sender, FileSystemEventArgs e)
         {
-            string value = $"Created: {e.FullPath}";
+            string value = $"Created: {e.FullPath} - time: {DateTime.Now.ToString()}";
             Console.WriteLine(value);
         }
 
-        private static void OnDeleted(object sender, FileSystemEventArgs e) =>
-            Console.WriteLine($"Deleted: {e.FullPath}");
+        private void OnDeleted(object sender, FileSystemEventArgs e) =>
+            Console.WriteLine($"Deleted: {e.FullPath} - time: {DateTime.Now.ToString()}");
 
-        private static void OnRenamed(object sender, RenamedEventArgs e)
+        private void OnRenamed(object sender, RenamedEventArgs e)
         {
-            Console.WriteLine($"Renamed:");
+            Console.WriteLine($"Renamed: - time: {DateTime.Now.ToString()}");
             Console.WriteLine($"    Old: {e.OldFullPath}");
             Console.WriteLine($"    New: {e.FullPath}");
         }
 
-        private static void OnError(object sender, ErrorEventArgs e) =>
+        private void OnError(object sender, ErrorEventArgs e) =>
             PrintException(e.GetException());
 
-        private static void PrintException(Exception ex)
+        private void PrintException(Exception ex)
         {
             if (ex != null)
             {
@@ -76,5 +82,7 @@ namespace FileWatcher
                 PrintException(ex.InnerException);
             }
         }
+
+        
     }
 }
