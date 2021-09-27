@@ -11,7 +11,7 @@ namespace FileChangeWatcher
 {
     class FileChangeWatcher
     {
-        private string path = @"C:\Users\sowoo\Desktop\FileChangeDataset";
+        private string path = @"D:\Code\Capstone\FileWatcher\FileChangeDataset";
 
         private S1 s1 = new S1();
         private S2 s2 = new S2();
@@ -50,22 +50,29 @@ namespace FileChangeWatcher
             }
             //Console.WriteLine($"Changed: {e.FullPath} - time: {DateTime.Now.ToString()}");
             Console.WriteLine($"Changed: {e.Name}");
+            s1.Run();
         }
 
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
             string value = $"Created: {e.FullPath} - time: {DateTime.Now.ToString()}";
             Console.WriteLine(value);
+            s1.Run();
         }
 
-        private void OnDeleted(object sender, FileSystemEventArgs e) =>
+        private void OnDeleted(object sender, FileSystemEventArgs e)
+        {
             Console.WriteLine($"Deleted: {e.FullPath} - time: {DateTime.Now.ToString()}");
+            s1.Run();
+        }
 
         private void OnRenamed(object sender, RenamedEventArgs e)
         {
             Console.WriteLine($"Renamed: - time: {DateTime.Now.ToString()}");
             Console.WriteLine($"    Old: {e.OldFullPath}");
             Console.WriteLine($"    New: {e.FullPath}");
+
+            s1.Run();
         }
 
         private void OnError(object sender, ErrorEventArgs e) =>
