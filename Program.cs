@@ -14,15 +14,18 @@ namespace FileChangeWatcher
         static void Main(string[] args)
         {
             // S1 테스트
-            S1 s1 = new S1();
-            s1.Run();
-
-            Thread.Sleep(1000 * 3);
-            s1.Run();
+            // S1 s1 = new S1();
+            // s1.Run();
+            // 
+            // Thread.Sleep(1000 * 3);
+            // s1.Run();
 
             // S2 테스트
             // S2 s2 = new S2();
             // s2.Run();
+
+            FileChangeWatcher fileChangeWatcher = new FileChangeWatcher();
+            fileChangeWatcher.Run();
         }
     }
 }
