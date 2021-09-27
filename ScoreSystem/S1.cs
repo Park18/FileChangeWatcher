@@ -10,30 +10,28 @@ namespace FileChangeWatcher.ScoreSystem
 {
     class S1 : AbstractScoreSystem
     {
-        private static int WaitingTime = 1000 * 5;
+        private static int WaitingTime = 1000 * 10;
 
         private int count = 0;
         private bool isFirstChange = true;  // 첫 번째 변화인지 확인하는 플래그
         private Thread thread;
+        private Timer timer;
 
+        /// <summary>
+        /// S1 시스템 실행 메소드
+        /// </summary>
         public override void Run()
         {
-            if (this.isFirstChange) 
-            { 
-                this.isFirstChange = false; 
-            }
+            if (this.isFirstChange)
+                this.isFirstChange = false;
 
-            // 타이머 생성
-            // 1. 타이머 쓰레드 생성되어 있는지 확인
-            //      1.1. 타이머 쓰레드가 생성되어 있으면 삭제
-            // 2. 타이머 쓰레드 생성
             if (thread == null)
                 thread = new Thread(SetTimer);
 
-            else if (thread.ThreadState != ThreadState.Stopped)
+            else if (thread.ThreadState != ThreadState.Stopped || thread.ThreadState != ThreadState.Aborted)
             {
-                Console.WriteLine("Thread.Abort()");
                 thread.Abort();
+                this.timer.Dispose();
                 thread = new Thread(SetTimer);
             }
 
@@ -46,22 +44,23 @@ namespace FileChangeWatcher.ScoreSystem
         private void SetTimer()
         {
             // Test Code
-            Console.WriteLine("Thread{0}: begin", Thread.CurrentThread.ManagedThreadId);
+            // Console.WriteLine("Thread{0}: begin", Thread.CurrentThread.ManagedThreadId);
 
             AutoResetEvent autoResetEvent = new AutoResetEvent(false);
-            Timer timer = new Timer(this.timer, autoResetEvent, WaitingTime, 0);
+            this.timer = new Timer(this.TimerRun, autoResetEvent, WaitingTime, 0);
+
 
             autoResetEvent.WaitOne();
-            timer.Dispose();
-
-            Console.WriteLine("Thread{0}: end", Thread.CurrentThread.ManagedThreadId);
+            this.timer.Dispose();
+            
+            // Test Code
+            // Console.WriteLine("Thread{0}: end", Thread.CurrentThread.ManagedThreadId);
         }
 
         /// <summary>
         /// 설정된 시간에 작동하는 타이머 메소드
         /// </summary>
-        /// <remarks></remarks>
-        private void timer(Object stateInfo)
+        private void TimerRun(Object stateInfo)
         {
             this.isFirstChange = true;
             this.Calculate();
@@ -75,6 +74,7 @@ namespace FileChangeWatcher.ScoreSystem
         /// </summary>
         protected override void Calculate()
         {
+            this._isCompleteCalculate = true;
             Console.WriteLine("Calculate(): Begin");
         }
     }
