@@ -8,11 +8,27 @@ namespace FileChangeWatcher.ScoreSystem
 {
     abstract class AbstractScoreSystem
     {
-        private int _score;
+        protected int _score;
+        protected bool _isCompleteCalculate;
+
+        public AbstractScoreSystem()
+        {
+            this._score = 0;
+            this._isCompleteCalculate = false;
+        }
 
         public int Score
         {
-            get { return this._score; }
+            get 
+            {
+                if (this._isCompleteCalculate)
+                {
+                    this._isCompleteCalculate = false;
+                    return this._score;
+                }
+                else
+                    return -1;
+            }
         }
 
         /// <summary>
