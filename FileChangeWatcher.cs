@@ -12,6 +12,7 @@ namespace FileChangeWatcher
     class FileChangeWatcher
     {
         private string path = @"D:\Code\Capstone\FileWatcher\FileChangeDataset";
+        private int totalNumberOfFiles = 0;
 
         private S1 s1 = new S1();
         private S2 s2 = new S2();
@@ -42,7 +43,7 @@ namespace FileChangeWatcher
             Console.ReadLine();
         }
 
-        void OnChanged(object sender, FileSystemEventArgs e)
+        private void OnChanged(object sender, FileSystemEventArgs e)
         {
             if (e.ChangeType != WatcherChangeTypes.Changed)
             {
