@@ -8,15 +8,8 @@ namespace FileChangeWatcher.ScoreSystem
 {
     abstract class AbstractScoreSystem
     {
-        protected int _score;
-        protected bool _isCompleteCalculate;
-
-        public AbstractScoreSystem()
-        {
-            this._score = 0;
-            this._isCompleteCalculate = false;
-        }
-
+        protected int _score = 0;
+        protected bool _isCompleteCalculate = false; // 변수명 바꾸고 싶음
         public int Score
         {
             get 
