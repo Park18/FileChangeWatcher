@@ -4,12 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using FileChangeWatcher;
+
 namespace FileChangeWatcher.ScoreSystem
 {
     abstract class AbstractScoreSystem
     {
         protected int _score = 0;
         protected bool _isCompleteCalculate = false; // 변수명 바꾸고 싶음
+        protected DBMS dbms = new DBMS();
+
         public int Score
         {
             get 
