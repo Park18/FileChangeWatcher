@@ -1,9 +1,8 @@
-
-/bin
-/obj
-/Properties
+# FileChangeWatcher
 /.vs
+/FileChangeDataset
 
-*config
-*csproj
+# FileChangeWatcher\FileChangeWatcher
+*/bin
+*/obj
 *csproj.user
