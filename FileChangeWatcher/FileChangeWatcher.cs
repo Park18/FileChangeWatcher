@@ -116,7 +116,7 @@ namespace FileChangeWatcher
         }
 
         /// <summary>
-        /// 연속된 작업인지 확인하고 타이머를 성정하는 메소드
+        /// 연속된 작업인지 확인하고 타이머를 생성하는 메소드
         /// </summary>
         private void CheckWork()
         {
@@ -137,12 +137,12 @@ namespace FileChangeWatcher
         }
 
         /// <summary>
-        /// 연속된 작업의 끝을 알기 위한 타이머의 시간을 설정하는 메소드
+        /// 연속된 작업의 끝을 알기 위한 타이머의 시간을 생성하는 메소드
         /// </summary>
         private void SetTimer()
         {
             // Test Code
-            Console.WriteLine("Thread{0}: begin", Thread.CurrentThread.ManagedThreadId);
+            //Console.WriteLine("Thread{0}: begin", Thread.CurrentThread.ManagedThreadId);
 
             AutoResetEvent autoResetEvent = new AutoResetEvent(false);
             this.timer = new Timer(this.TimerRun, autoResetEvent, WaitingTime, 0);
@@ -152,7 +152,7 @@ namespace FileChangeWatcher
             this.timer.Dispose();
 
             // Test Code
-            Console.WriteLine("Thread{0}: end", Thread.CurrentThread.ManagedThreadId);
+            //Console.WriteLine("Thread{0}: end", Thread.CurrentThread.ManagedThreadId);
         }
 
         /// <summary>
