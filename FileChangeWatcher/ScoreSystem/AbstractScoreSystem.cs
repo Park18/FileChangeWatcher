@@ -29,13 +29,8 @@ namespace FileChangeWatcher.ScoreSystem
         }
 
         /// <summary>
-        /// ScoreSystem을 실행시키는 메소드
-        /// </summary>
-        public abstract void Run();
-
-        /// <summary>
         /// 점수를 계산하는 메소드
         /// </summary>
-        protected abstract void Calculate();
+        public abstract void Calculate();
     }
 }
