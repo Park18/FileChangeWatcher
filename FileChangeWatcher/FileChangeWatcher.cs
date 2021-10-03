@@ -161,7 +161,7 @@ namespace FileChangeWatcher
         private void TimerRun(Object stateInfo)
         {
             this.isFirstChange = true;
-            s1.Run();
+            s1.Calculate();
 
             AutoResetEvent autoResetEvent = (AutoResetEvent)stateInfo;
             autoResetEvent.Set();
