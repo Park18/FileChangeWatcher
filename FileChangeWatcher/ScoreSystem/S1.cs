@@ -16,29 +16,14 @@ namespace FileChangeWatcher.ScoreSystem
     /// </remarks>
     class S1 : AbstractScoreSystem
     {
-        private static int WaitingTime = 1000 * 10;
-
-        private bool isFirstChange = true;  // 첫 번째 변화인지 확인하는 플래그
-        private Thread thread;
-        private Timer timer;
-
         /// <summary>
-        /// S1 시스템 실행 메소드
+        /// 점수를 계산 메소드
         /// </summary>
-        public override void Run()
-        {
-            this.Calculate();
-        }
-
-        /// <summary>
-        /// 점수를 계산하는 메소드
-        /// </summary>
-        protected override void Calculate()
+        public override void Calculate()
         {
             this._isCompleteCalculate = true;
-            Console.WriteLine("Calculate(): Begin");
 
-
+            int percentage = dbms.TotalFileNumbers / dbms.ChangeFileList.Count * 100;
         }
     }
 }
