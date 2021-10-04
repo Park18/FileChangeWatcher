@@ -81,5 +81,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CLRFuzzyShannonDLL\CLRFuzzyShannonDLL.vcxproj">
+      <Project>{777fec69-c15a-4c3e-bad9-ad3659b5c46f}</Project>
+      <Name>CLRFuzzyShannonDLL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

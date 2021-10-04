@@ -1,0 +1,9 @@
+﻿  CLRFuzzyShannonDLL.cpp
+C:\Users\NULL\source\repos\Park18\FileChangeWatcher\CLRFuzzyShannonDLL\CLRFuzzyShannonDLL.h(24,70): warning C4190: 'computehash'에 C 연결을 지정했으나 C와 호환되지 않는 UDT 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'을(를) 반환합니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\xstring(4905): message : 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' 선언을 참조하십시오.
+C:\Users\NULL\source\repos\Park18\FileChangeWatcher\CLRFuzzyShannonDLL\CLRFuzzyShannonDLL.cpp(42,2): warning C4190: 'computehash'에 C 연결을 지정했으나 C와 호환되지 않는 UDT 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'을(를) 반환합니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\xstring(4905): message : 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' 선언을 참조하십시오.
+  AssemblyInfo.obj : MSIL 모듈이 발견되었습니다. MSIL에 증분 링크를 사용할 수 없습니다. 전체 링크를 수행하고 있습니다.
+FuzzyShannonStaticLib.lib(FuzzyShannonStaticLib.obj) : warning LNK4075: '/EDITANDCONTINUE'이(가) '/INCREMENTAL:NO' 사양으로 인해 무시됩니다.
+     C:\Users\NULL\source\repos\Park18\FileChangeWatcher\Debug\CLRFuzzyShannonDLL.lib 라이브러리 및 C:\Users\NULL\source\repos\Park18\FileChangeWatcher\Debug\CLRFuzzyShannonDLL.exp 개체를 생성하고 있습니다.
+  CLRFuzzyShannonDLL.vcxproj -> C:\Users\NULL\source\repos\Park18\FileChangeWatcher\Debug\CLRFuzzyShannonDLL.dll

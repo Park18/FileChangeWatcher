@@ -7,15 +7,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 using FileChangeWatcher.ScoreSystem;
+using System.Runtime.InteropServices;
 
 namespace FileChangeWatcher
 {
     class FileChangeWatcher
     {
+        [DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern double Shannon(string str);
+
         /// <summary>
         /// Filesystem 관련
         /// </summary>
-        private string path = @"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset";
+        private string path = @"C:\Users\NULL\Desktop\test";
 
         /// <summary>
         /// 타이머 관련
@@ -96,6 +100,7 @@ namespace FileChangeWatcher
             Console.WriteLine($"Renamed: - time: {DateTime.Now.ToString()}");
             Console.WriteLine($"    Old: {e.OldFullPath}");
             Console.WriteLine($"    New: {e.FullPath}");
+            double a = Shannon(e.FullPath);
 
             this.CheckWork();
         }
