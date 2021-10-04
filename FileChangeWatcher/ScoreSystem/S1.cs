@@ -21,9 +21,16 @@ namespace FileChangeWatcher.ScoreSystem
         /// </summary>
         public override void Calculate()
         {
-            this._isCompleteCalculate = true;
+            try
+            {
+                this._isCompleteCalculate = true;
 
-            int percentage = dbms.TotalFileNumbers / dbms.ChangeFileList.Count * 100;
+                int percentage = dbms.TotalFileNumbers / dbms.ChangeFileList.Count * 100;
+            }
+            catch(DivideByZeroException divideException)
+            {
+                return;
+            }
         }
     }
 }
