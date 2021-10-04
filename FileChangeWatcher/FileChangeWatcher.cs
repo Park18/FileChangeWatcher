@@ -73,22 +73,28 @@ namespace FileChangeWatcher
             {
                 return;
             }
-            //Console.WriteLine($"Changed: {e.FullPath} - time: {DateTime.Now.ToString()}");
-            Console.WriteLine($"Changed: {e.Name}");
+            Console.WriteLine($"Changed: {e.FullPath} - time: {DateTime.Now.ToString()}");
+
             this.CheckWork();
+            this.dbms.AddChangeFile(e.FullPath);
         }
 
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
-            string value = $"Created: {e.FullPath} - time: {DateTime.Now.ToString()}";
-            Console.WriteLine(value);
+            Console.WriteLine($"Created: {e.FullPath} - time: {DateTime.Now.ToString()}");
+
             this.CheckWork();
+            this.dbms.AddChangeFile(e.FullPath);
         }
 
         private void OnDeleted(object sender, FileSystemEventArgs e)
         {
             Console.WriteLine($"Deleted: {e.FullPath} - time: {DateTime.Now.ToString()}");
+
             this.CheckWork();
+
+            // 삭제된 파일,폴더까지 변경점에 넣어야 하는지 의문
+            //this.dbms.AddChangeFile(e.FullPath);
         }
 
         private void OnRenamed(object sender, RenamedEventArgs e)
@@ -98,6 +104,7 @@ namespace FileChangeWatcher
             Console.WriteLine($"    New: {e.FullPath}");
 
             this.CheckWork();
+            this.dbms.AddChangeFile(e.FullPath);
         }
 
         private void OnError(object sender, ErrorEventArgs e) =>
@@ -141,18 +148,11 @@ namespace FileChangeWatcher
         /// </summary>
         private void SetTimer()
         {
-            // Test Code
-            //Console.WriteLine("Thread{0}: begin", Thread.CurrentThread.ManagedThreadId);
-
             AutoResetEvent autoResetEvent = new AutoResetEvent(false);
             this.timer = new Timer(this.TimerRun, autoResetEvent, WaitingTime, 0);
 
-
             autoResetEvent.WaitOne();
             this.timer.Dispose();
-
-            // Test Code
-            //Console.WriteLine("Thread{0}: end", Thread.CurrentThread.ManagedThreadId);
         }
 
         /// <summary>
@@ -160,11 +160,26 @@ namespace FileChangeWatcher
         /// </summary>
         private void TimerRun(Object stateInfo)
         {
-            this.isFirstChange = true;
-            s1.Calculate();
+            // 테스트 코드
+            Console.WriteLine("Timer Run Start");
 
+            // 플래그 초기화
+            this.isFirstChange = true;
+
+            // 계산
+            //s1.Calculate();
+            //s2.Calculate();
+
+            // DB 초기화
+            //dbms.Init();
+            //dbms.ResetChangeFileList();
+
+            // 타이머 초기화
             AutoResetEvent autoResetEvent = (AutoResetEvent)stateInfo;
             autoResetEvent.Set();
+
+            // 테스트 코드
+            Console.WriteLine("Timer Run End");
         }
     }
 }
