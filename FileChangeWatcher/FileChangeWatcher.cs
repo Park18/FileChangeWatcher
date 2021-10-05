@@ -15,6 +15,10 @@ namespace FileChangeWatcher
     {
         [DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern double Shannon(string str);
+        [DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern string computehash(string str);
+        [DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern int comparehash(string hash1, string hash2);
 
         /// <summary>
         /// Filesystem 관련
@@ -97,10 +101,12 @@ namespace FileChangeWatcher
 
         private void OnRenamed(object sender, RenamedEventArgs e)
         {
+            string filepath = e.FullPath;
             Console.WriteLine($"Renamed: - time: {DateTime.Now.ToString()}");
             Console.WriteLine($"    Old: {e.OldFullPath}");
             Console.WriteLine($"    New: {e.FullPath}");
-            double a = Shannon(e.FullPath);
+            string b = computehash(filepath);
+            int c = comparehash(b, b);
 
             this.CheckWork();
         }

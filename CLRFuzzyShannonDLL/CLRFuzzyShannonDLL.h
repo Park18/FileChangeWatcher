@@ -22,7 +22,7 @@ namespace CLRFuzzyShannonDLL {
 	extern "C" {
 		__declspec(dllexport) double Shannon(const char* filepath);
 		__declspec(dllexport) std::string computehash(const char* filepath);
-		__declspec(dllexport) int comparehash(std::string hash1, std::string hash2);
+		__declspec(dllexport) int comparehash(const char* hash1, const char* hash2);
 	}
 
 }
