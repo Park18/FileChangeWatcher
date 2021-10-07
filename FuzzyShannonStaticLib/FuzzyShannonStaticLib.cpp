@@ -172,7 +172,7 @@ std::string LibFuzzyShannon::computehash(const char* filepath)
 		fprintf(stderr, "%s: failed to stringize the digest.\n", filepath);
 		return "open error";
 	}
-	printf(digestformatbuf, digestbuf, filepath);
+	std::cout << digestbuf << std::endl;
 
 
 	return digestbuf;

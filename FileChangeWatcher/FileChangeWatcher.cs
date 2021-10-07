@@ -13,10 +13,11 @@ namespace FileChangeWatcher
 {
     class FileChangeWatcher
     {
+        
         [DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern double Shannon(string str);
         [DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern string computehash(string str);
+        public static extern System.IntPtr computehash(string str);
         [DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern int comparehash(string hash1, string hash2);
 
@@ -105,9 +106,10 @@ namespace FileChangeWatcher
             Console.WriteLine($"Renamed: - time: {DateTime.Now.ToString()}");
             Console.WriteLine($"    Old: {e.OldFullPath}");
             Console.WriteLine($"    New: {e.FullPath}");
-            string b = computehash(filepath);
-            int c = comparehash(b, b);
-
+            IntPtr p = computehash(filepath);
+            string c = Marshal.PtrToStringAnsi(p);
+            Console.WriteLine(c);
+            //Marshal.FreeHGlobal(p);
             this.CheckWork();
         }
 

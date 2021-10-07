@@ -1,8 +1,14 @@
 #include "pch.h"
 
+#include <Windows.h>
+#include <iostream>
+#include <vector>
+
 #include "CLRFuzzyShannonDLL.h"
 
-#include <iostream>
+using namespace System;
+using namespace System::Collections;
+
 namespace CLRFuzzyShannonDLL
 {
 	FuzzyShannon::FuzzyShannon() : m_pLibFuzzyShannon(new LibFuzzyShannon)
@@ -38,9 +44,18 @@ namespace CLRFuzzyShannonDLL
 	{
 		return FuzzyShannon::FuzzyShannon().Shannon(filepath);
 	}
-	extern "C" __declspec(dllexport) std::string computehash(const char* filepath)
+	extern "C" __declspec(dllexport) char* computehash(const char* filepath)
 	{
-		return FuzzyShannon::FuzzyShannon().computehash(filepath);
+
+		std::string str = FuzzyShannon::FuzzyShannon().computehash(filepath);
+		const char* pctr = str.c_str();
+		char* result = (char*)LocalAlloc(LPTR, strlen(pctr) + 1);
+
+		strcpy(result, pctr);
+
+		LocalFree(result);
+
+		return result;
 	}
 	extern "C" __declspec(dllexport) int comparehash(const char* chash1, const char* chash2)
 	{

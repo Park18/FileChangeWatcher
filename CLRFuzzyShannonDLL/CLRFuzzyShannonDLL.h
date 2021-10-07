@@ -19,10 +19,38 @@ namespace CLRFuzzyShannonDLL {
 	};
 
 
+	/*
+	c#에서 사용법
+	사용할 클래스 내에 
+	[DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
+	static extern double Shannon(string str);
+	[DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
+	public static extern System.IntPtr computehash(string str);
+	[DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
+	static extern int comparehash(string hash1, string hash2);
+	선언 후 사용
+
+	double Shannon(string filepath);			filepath의 Shannon 값 double로 리턴
+
+
+
+	IntPtr computehash(string filepath);		filepath의 Fuzzy 값 IntPtr로 리턴
+	사용법
+	IntPtr p = computehash(filepath);
+	string c = Marshal.PtrToStringAnsi(p);		
+	Marshal.FreeHGlobal(p);	//현재 힙영역 오류뜸 이거 안써도 작동은 됨
+
+
+
+	int comparehash(string hash1, string hash2)	두 hash값의 스코어 값 반환
+
+	*/
+
 	extern "C" {
 		__declspec(dllexport) double Shannon(const char* filepath);
-		__declspec(dllexport) std::string computehash(const char* filepath);
+		__declspec(dllexport) char* computehash(const char* filepath);
 		__declspec(dllexport) int comparehash(const char* hash1, const char* hash2);
 	}
+
 
 }
