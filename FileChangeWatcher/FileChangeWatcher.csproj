@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBMS.cs" />
+    <Compile Include="FuzzyShannon.cs" />
     <Compile Include="ScoreSystem\AbstractScoreSystem.cs" />
     <Compile Include="ScoreSystem\S1.cs" />
     <Compile Include="ScoreSystem\S2.cs" />
