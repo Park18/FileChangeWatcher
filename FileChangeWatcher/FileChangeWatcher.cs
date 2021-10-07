@@ -7,20 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 using FileChangeWatcher.ScoreSystem;
-using System.Runtime.InteropServices;
 
 namespace FileChangeWatcher
 {
     class FileChangeWatcher
     {
-        
-        [DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern double computeShannon(string str);
-        [DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern System.IntPtr computeHash(string str);
-        [DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern int compareHash(string hash1, string hash2);
-
         /// <summary>
         /// Filesystem 관련
         /// </summary>
@@ -82,7 +73,8 @@ namespace FileChangeWatcher
             {
                 return;
             }
-            Console.WriteLine($"Changed: {e.FullPath} - time: {DateTime.Now.ToString()}");
+            Console.WriteLine($"<Changed>: {e.FullPath}");
+            Console.WriteLine($"[Time]: {DateTime.Now.ToString()}");
 
             this.CheckWork();
             this.dbms.AddChangeFile(e.FullPath);
@@ -90,7 +82,8 @@ namespace FileChangeWatcher
 
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine($"Created: {e.FullPath} - time: {DateTime.Now.ToString()}");
+            Console.WriteLine($"<Created>: {e.FullPath}");
+            Console.WriteLine($"[Time]: {DateTime.Now.ToString()}");
 
             this.CheckWork();
             this.dbms.AddChangeFile(e.FullPath);
@@ -98,7 +91,8 @@ namespace FileChangeWatcher
 
         private void OnDeleted(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine($"Deleted: {e.FullPath} - time: {DateTime.Now.ToString()}");
+            Console.WriteLine($"<Deleted>: {e.FullPath}");
+            Console.WriteLine($"[Time]: {DateTime.Now.ToString()}");
 
             this.CheckWork();
 
@@ -109,14 +103,11 @@ namespace FileChangeWatcher
         private void OnRenamed(object sender, RenamedEventArgs e)
         {
             string filepath = e.FullPath;
-            Console.WriteLine($"Renamed: - time: {DateTime.Now.ToString()}");
+            Console.WriteLine($"<Renamed>");
             Console.WriteLine($"    Old: {e.OldFullPath}");
             Console.WriteLine($"    New: {e.FullPath}");
-            double sp = computeShannon(filepath);
-            IntPtr p = computeHash(filepath);
-            string c = Marshal.PtrToStringAnsi(p);
-            Marshal.FreeHGlobal(p);
-            int ph = compareHash(c, c);
+            Console.WriteLine($"[Time]: {DateTime.Now.ToString()}");
+
             this.CheckWork();
             this.dbms.AddChangeFile(e.FullPath);
         }
@@ -128,8 +119,8 @@ namespace FileChangeWatcher
         {
             if (ex != null)
             {
-                Console.WriteLine($"Message: {ex.Message}");
-                Console.WriteLine("Stacktrace:");
+                Console.WriteLine($"<Message>: {ex.Message}");
+                Console.WriteLine("<Stacktrace>:");
                 Console.WriteLine(ex.StackTrace);
                 Console.WriteLine();
                 PrintException(ex.InnerException);
