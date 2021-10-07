@@ -6,3 +6,7 @@
 */bin
 */obj
 *csproj.user
+
+*/Debug
+*.vcxproj.filters
+*.vcxproj.user
