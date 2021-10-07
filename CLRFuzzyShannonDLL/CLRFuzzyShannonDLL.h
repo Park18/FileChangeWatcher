@@ -45,7 +45,7 @@ namespace CLRFuzzyShannonDLL {
 
 
 
-	int compareHash(string hash1, string hash2)	두 hash값의 스코어 값 반환
+	int compareHash(string hash1, string hash2);	두 hash값의 스코어 값 반환
 
 	*/
 
