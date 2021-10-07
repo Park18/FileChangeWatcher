@@ -21,35 +21,38 @@ namespace CLRFuzzyShannonDLL {
 
 	/*
 	c#에서 사용법
+	using System.Runtime.InteropServices;
+	쓰고 시작하세요
+
 	사용할 클래스 내에 
 	[DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-	static extern double Shannon(string str);
+	static extern double computeShannon(string str);
 	[DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-	public static extern System.IntPtr computehash(string str);
+	public static extern System.IntPtr computeHash(string str);
 	[DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-	static extern int comparehash(string hash1, string hash2);
+	static extern int compareHash(string hash1, string hash2);
 	선언 후 사용
 
-	double Shannon(string filepath);			filepath의 Shannon 값 double로 리턴
+	double computeShannon(string filepath);			filepath의 Shannon 값 double로 리턴
 
 
 
-	IntPtr computehash(string filepath);		filepath의 Fuzzy 값 IntPtr로 리턴
+	IntPtr computeHash(string filepath);		filepath의 Fuzzy 값 IntPtr로 리턴
 	사용법
-	IntPtr p = computehash(filepath);
+	IntPtr p = computeHash(filepath);
     string c = Marshal.PtrToStringAnsi(p);
     Marshal.FreeHGlobal(p);
 
 
 
-	int comparehash(string hash1, string hash2)	두 hash값의 스코어 값 반환
+	int compareHash(string hash1, string hash2)	두 hash값의 스코어 값 반환
 
 	*/
 
 	extern "C" {
-		__declspec(dllexport) double Shannon(const char* filepath);
-		__declspec(dllexport) char* computehash(const char* filepath);
-		__declspec(dllexport) int comparehash(const char* hash1, const char* hash2);
+		__declspec(dllexport) double computeShannon(const char* filepath);
+		__declspec(dllexport) char* computeHash(const char* filepath);
+		__declspec(dllexport) int compareHash(const char* hash1, const char* hash2);
 	}
 
 

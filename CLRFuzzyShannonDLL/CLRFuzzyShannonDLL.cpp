@@ -40,11 +40,11 @@ namespace CLRFuzzyShannonDLL
 	}
 
 
-	extern "C" __declspec(dllexport) double Shannon(const char* filepath)
+	extern "C" __declspec(dllexport) double computeShannon(const char* filepath)
 	{
 		return FuzzyShannon::FuzzyShannon().Shannon(filepath);
 	}
-	extern "C" __declspec(dllexport) char* computehash(const char* filepath)
+	extern "C" __declspec(dllexport) char* computeHash(const char* filepath)
 	{
 
 		std::string str = FuzzyShannon::FuzzyShannon().computehash(filepath);
@@ -53,7 +53,7 @@ namespace CLRFuzzyShannonDLL
 		strcpy(result, pctr);
 		return result;
 	}
-	extern "C" __declspec(dllexport) int comparehash(const char* chash1, const char* chash2)
+	extern "C" __declspec(dllexport) int compareHash(const char* chash1, const char* chash2)
 	{
 		std::string hash1 = chash1;
 		std::string hash2 = chash2;
