@@ -79,7 +79,7 @@ double LibFuzzyShannon::Shannon(const char* filepath)
 			double freq = static_cast<double>(p.second) / numlen;
 			infocontent -= freq * log(freq) / log(2);
 		}
-		std::cout << infocontent << std::endl;
+		//std::cout << infocontent << std::endl;
 		return infocontent;
 	}
 }
@@ -172,7 +172,7 @@ std::string LibFuzzyShannon::computehash(const char* filepath)
 		fprintf(stderr, "%s: failed to stringize the digest.\n", filepath);
 		return "open error";
 	}
-	std::cout << digestbuf << std::endl;
+	//std::cout << digestbuf << std::endl;
 
 
 	return digestbuf;
@@ -246,7 +246,7 @@ int LibFuzzyShannon::comparehash(std::string hash1, std::string hash2)
 	*/
 	digest_comparison_score_t score =
 		decltype(h1.d)::compare<comparison_version::v2_9>(h1.d, h2.d);
-	printf("SCORE: %u\n", unsigned(score)); // safe to cast to unsigned (value is in [0,100])
+	//printf("SCORE: %u\n", unsigned(score)); // safe to cast to unsigned (value is in [0,100])
 
 	return unsigned(score);
 }

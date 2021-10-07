@@ -37,8 +37,8 @@ namespace CLRFuzzyShannonDLL {
 	IntPtr computehash(string filepath);		filepath의 Fuzzy 값 IntPtr로 리턴
 	사용법
 	IntPtr p = computehash(filepath);
-	string c = Marshal.PtrToStringAnsi(p);		
-	Marshal.FreeHGlobal(p);	//현재 힙영역 오류뜸 이거 안써도 작동은 됨
+    string c = Marshal.PtrToStringAnsi(p);
+    Marshal.FreeHGlobal(p);
 
 
 

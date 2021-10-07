@@ -50,11 +50,7 @@ namespace CLRFuzzyShannonDLL
 		std::string str = FuzzyShannon::FuzzyShannon().computehash(filepath);
 		const char* pctr = str.c_str();
 		char* result = (char*)LocalAlloc(LPTR, strlen(pctr) + 1);
-
 		strcpy(result, pctr);
-
-		LocalFree(result);
-
 		return result;
 	}
 	extern "C" __declspec(dllexport) int comparehash(const char* chash1, const char* chash2)

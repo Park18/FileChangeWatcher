@@ -106,10 +106,11 @@ namespace FileChangeWatcher
             Console.WriteLine($"Renamed: - time: {DateTime.Now.ToString()}");
             Console.WriteLine($"    Old: {e.OldFullPath}");
             Console.WriteLine($"    New: {e.FullPath}");
+            double sp = Shannon(filepath);
             IntPtr p = computehash(filepath);
             string c = Marshal.PtrToStringAnsi(p);
-            Console.WriteLine(c);
-            //Marshal.FreeHGlobal(p);
+            Marshal.FreeHGlobal(p);
+            int ph = comparehash(c, c);
             this.CheckWork();
         }
 
