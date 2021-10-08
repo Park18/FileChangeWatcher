@@ -7,18 +7,35 @@ using System.Threading.Tasks;
 
 namespace FileChangeWatcher
 {
-    struct Data
+    /// <summary>
+    /// 파일 정보
+    /// </summary>
+    struct DataInfo
     {
-        string path;
-        string fuzzy;
-        string shannon;
+        public string Path { get; }
+        public string Fuzzy { get; }
+        public double Shannon { get; }
+
+        public DataInfo(string path, string fuzzy, double shannon)
+        {
+            Path = path;
+            Fuzzy = fuzzy;
+            Shannon = shannon;
+        }
     }
 
     class DBMS
     {
+        private string _rootPath = @"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset";
+        private string _originFileInfoPath = @"OriginFileInfo.csv";
         private static int _totalFileNumbers = 0;
         private static List<string> _changeFileList = new List<string>();
-        private static List<Data> _dataList = new List<Data>();
+        private List<DataInfo> dataList = new List<DataInfo>();
+
+        public string RootPath
+        {
+            get { return _rootPath; }
+        }
 
         public int TotalFileNumbers
         {
@@ -36,18 +53,34 @@ namespace FileChangeWatcher
         /// <returns>DB 초기화 실패 여부</returns>
         public bool Init()
         {
-            this.ResetChangeFileList();
-
             // 관리 폴더 경로 이하 계층에 있는 파일을 순서대로 접근
             // 접근한 파일의 경로, Fuzzy, Shaanon 정보를 Data 구조체를 이용해 List에 추가
             // 모든 파일에 접근 완료 했으면 csv 파일에 정보 대입
+            DFS(_rootPath);
+            using (StreamWriter writeFile = new StreamWriter(_originFileInfoPath, false, System.Text.Encoding.GetEncoding("utf-8")))
+            {
+                writeFile.WriteLine("Path, Fuzzy, Shannon");
+
+                foreach (DataInfo data in dataList)
+                    writeFile.WriteLine($"{data.Path}, {data.Fuzzy}, {data.Shannon}");
+            }
 
             return true;
         }
 
+        /// <summary>
+        /// 변경된 파일 리스트 초기화
+        /// </summary>
+        /// <remarks>
+        /// 변경된 파일 리스트가 인스턴스변수로 할지, 클래스변수로 할지 고민중
+        /// </remarks>
         public void ResetChangeFileList()
             => _changeFileList.Clear();
 
+        /// <summary>
+        /// 변화된 파일 경로를 DBMS에 추가시키는 메소드
+        /// </summary>
+        /// <param name="path">파일 경로</param>
         public void AddChangeFile(string path)
         {
             try
@@ -65,24 +98,53 @@ namespace FileChangeWatcher
             }
         }
 
+        /// <summary>
+        /// 파일정보리스트를 DFS 알고리즘을 통해 초기화
+        /// </summary>
+        /// <param name="directoryPath">디렉토리 경로</param>
+        private void DFS(string directoryPath)
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(directoryPath);
+            if(directoryInfo.Exists)
+            {
+                foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
+                {
+                    DFS(directory.FullName);
+                }
+
+                foreach (FileInfo file in directoryInfo.GetFiles())
+                {
+                    this.dataList.Add(
+                        new DataInfo(
+                            file.FullName,
+                            FuzzyShannon.ComputeFuzzyHash(file.FullName),
+                            FuzzyShannon.Shannon(file.FullName)
+                        )
+                    );
+                }
+            }
+        }
+
         public void TestCode()
         {
-            this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\0.jajajajajajaj");
-            this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\1.exe");
-            this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\1.exe");
-            this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\1.exe");
-            this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\1.exe");
-            this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\2.pdf");
-            this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\3.hwp");
-            this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\4.docx");
-            this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\5.pdf");
-            this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\6.hwp");
-            this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\7.pdf");
-            this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\8.asfasdf");
-            this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\9.fasfasd");
-            this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b");
-            foreach (string path in _changeFileList)
-                Console.WriteLine(path);
+            //this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\0.jajajajajajaj");
+            //this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\1.exe");
+            //this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\1.exe");
+            //this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\1.exe");
+            //this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\1.exe");
+            //this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\2.pdf");
+            //this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\3.hwp");
+            //this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\4.docx");
+            //this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\5.pdf");
+            //this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\6.hwp");
+            //this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\7.pdf");
+            //this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\8.asfasdf");
+            //this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b\9.fasfasd");
+            //this.AddChangeFile(@"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset\b");
+            //foreach (string path in _changeFileList)
+            //    Console.WriteLine(path);
+
+            this.Init();
         }
     }
 }
