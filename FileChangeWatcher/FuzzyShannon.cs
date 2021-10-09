@@ -11,11 +11,11 @@ namespace FileChangeWatcher
     class FuzzyShannon
     {
         [DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern double computeShannon(string str);
+        static extern double computeShannon(string str);
         [DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern System.IntPtr computeHash(string str);
+        public static extern System.IntPtr computeHash(string str);
         [DllImport("CLRFuzzyShannonDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern int compareHash(string hash1, string hash2);
+        static extern int compareHash(string hash1, string hash2);
 
         /// <summary>
         /// Shannon을 반환하는 메소드

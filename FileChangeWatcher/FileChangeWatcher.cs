@@ -13,6 +13,11 @@ namespace FileChangeWatcher
     class FileChangeWatcher
     {
         /// <summary>
+        /// Filesystem 관련
+        /// </summary>
+        private string path = @"C:\Users\NULL\Desktop\test";
+
+        /// <summary>
         /// 타이머 관련
         /// </summary>
         private bool isFirstChange = true;
@@ -38,7 +43,7 @@ namespace FileChangeWatcher
 
         public void Run()
         {
-            var filesystemWatcher = new FileSystemWatcher(dbms.RootPath);
+            var filesystemWatcher = new FileSystemWatcher(path);
 
             filesystemWatcher.NotifyFilter = NotifyFilters.Attributes
                                             | NotifyFilters.CreationTime
@@ -171,9 +176,8 @@ namespace FileChangeWatcher
             //s2.Calculate();
 
             // DB 초기화
-            // dbms.ResetChangeFileList() 실행 위치 이곳이 맞는가..?
             //dbms.Init();
-            dbms.ResetChangeFileList();
+            //dbms.ResetChangeFileList();
 
             // 타이머 초기화
             AutoResetEvent autoResetEvent = (AutoResetEvent)stateInfo;

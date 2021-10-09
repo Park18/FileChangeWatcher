@@ -19,8 +19,10 @@ namespace FileChangeWatcher
             DBMS dbms = new DBMS();
 
             //dbms.TestCode();
-            //s1.TestCode();
             //s2.TestCode();
+
+            s1.Calculate();
+            s2.Calculate();
 
             // Program 테스트
             FileChangeWatcher fileChangeWatcher = new FileChangeWatcher();
