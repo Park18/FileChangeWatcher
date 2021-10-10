@@ -26,11 +26,10 @@ namespace FileChangeWatcher
 
     class DBMS
     {
-        private string _rootPath = @"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset";
+        private string _rootPath = @"C:\Users\NULL\Desktop\sample";
         private string _originFileInfoPath = @"OriginFileInfo.csv";
-        private static int _totalFileNumbers = 0;
         private static List<string> _changeFileList = new List<string>();
-        private List<DataInfo> dataList = new List<DataInfo>();
+        private static List<DataInfo> dataInfoList = new List<DataInfo>();
 
         public string RootPath
         {
@@ -39,12 +38,17 @@ namespace FileChangeWatcher
 
         public int TotalFileNumbers
         {
-            get { return _totalFileNumbers; }
+            get { return dataInfoList.Count; }
         }
 
         public List<string> ChangeFileList
         {
             get { return _changeFileList; }
+        }
+
+        public List<DataInfo> DataInfoList
+        {
+            get { return dataInfoList; }
         }
 
         /// <summary>
@@ -53,16 +57,20 @@ namespace FileChangeWatcher
         /// <returns>DB 초기화 실패 여부</returns>
         public bool Init()
         {
-            // 관리 폴더 경로 이하 계층에 있는 파일을 순서대로 접근
-            // 접근한 파일의 경로, Fuzzy, Shaanon 정보를 Data 구조체를 이용해 List에 추가
-            // 모든 파일에 접근 완료 했으면 csv 파일에 정보 대입
+            dataInfoList.Clear();
+
+            /// 관리 폴더 경로 이하 계층에 있는 파일을 순서대로 접근
+            /// 접근한 파일의 경로, Fuzzy, Shaanon 정보를 Data 구조체를 이용해 List에 추가
+            /// 모든 파일에 접근 완료 했으면 csv 파일에 정보 대입
             DFS(_rootPath);
             using (StreamWriter writeFile = new StreamWriter(_originFileInfoPath, false, System.Text.Encoding.GetEncoding("utf-8")))
             {
                 writeFile.WriteLine("Path, Fuzzy, Shannon");
 
-                foreach (DataInfo data in dataList)
+                foreach (DataInfo data in dataInfoList)
+                {
                     writeFile.WriteLine($"{data.Path}, {data.Fuzzy}, {data.Shannon}");
+                }
             }
 
             return true;
@@ -73,20 +81,20 @@ namespace FileChangeWatcher
         /// </summary>
         /// <remarks>
         /// 변경된 파일 리스트가 인스턴스변수로 할지, 클래스변수로 할지 고민중
+        /// 실행 위치도 고민중
         /// </remarks>
         public void ResetChangeFileList()
             => _changeFileList.Clear();
 
         /// <summary>
-        /// 변화된 파일 경로를 DBMS에 추가시키는 메소드
+        /// 변경된 파일 경로를 DBMS에 추가시키는 메소드
         /// </summary>
         /// <param name="path">파일 경로</param>
         public void AddChangeFile(string path)
         {
             try
             {
-                FileAttributes fileAttributes = File.GetAttributes(path);
-                if ((fileAttributes & FileAttributes.Directory) == FileAttributes.Directory)
+                if (this.IsDirectory(path))
                     return;
 
                 if(!_changeFileList.Contains(path))
@@ -99,7 +107,7 @@ namespace FileChangeWatcher
         }
 
         /// <summary>
-        /// 파일정보리스트를 DFS 알고리즘을 통해 초기화
+        /// 파일 트리를 DFS 알고리즘을 사용하여 file data 초기화
         /// </summary>
         /// <param name="directoryPath">디렉토리 경로</param>
         private void DFS(string directoryPath)
@@ -114,7 +122,7 @@ namespace FileChangeWatcher
 
                 foreach (FileInfo file in directoryInfo.GetFiles())
                 {
-                    this.dataList.Add(
+                    dataInfoList.Add(
                         new DataInfo(
                             file.FullName,
                             FuzzyShannon.ComputeFuzzyHash(file.FullName),
@@ -123,6 +131,20 @@ namespace FileChangeWatcher
                     );
                 }
             }
+        }
+
+        /// <summary>
+        /// 매개변수로 받은 경로가 디렉토리 인지 확인하는 메소드
+        /// </summary>
+        /// <param name="path">경로</param>
+        /// <returns>해당 경로가 디렉토리: true, 해당 경로가 디렉토리가 아님: false</returns>
+        private bool IsDirectory(string path)
+        {
+            FileAttributes fileAttributes = File.GetAttributes(path);
+            if ((fileAttributes & FileAttributes.Directory) == FileAttributes.Directory)
+                return true;
+
+            return false;
         }
 
         public void TestCode()
