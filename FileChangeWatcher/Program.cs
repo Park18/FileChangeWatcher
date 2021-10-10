@@ -13,16 +13,16 @@ namespace FileChangeWatcher
     {
         static void Main(string[] args)
         {
-            // ScoreSystem 테스트
-            S1 s1 = new S1();
-            S2 s2 = new S2();
-            DBMS dbms = new DBMS();
+            /// ScoreSystem 테스트
+            //S1 s1 = new S1();
+            //S2 s2 = new S2();
+            //DBMS dbms = new DBMS();
 
             //dbms.TestCode();
             //s1.TestCode();
             //s2.TestCode();
 
-            // Program 테스트
+            /// Program 테스트
             FileChangeWatcher fileChangeWatcher = new FileChangeWatcher();
             fileChangeWatcher.Run();
         }

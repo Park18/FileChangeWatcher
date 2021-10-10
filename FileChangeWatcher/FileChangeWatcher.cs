@@ -34,11 +34,16 @@ namespace FileChangeWatcher
         public FileChangeWatcher()
         {
             dbms.Init();
+            Console.WriteLine($"실행 초기화_TotalFileNumber - {dbms.TotalFileNumbers}");
         }
 
         public void Run()
         {
             var filesystemWatcher = new FileSystemWatcher(dbms.RootPath);
+
+            /// FilesystemWatcher 내부버퍼(기본 8192(8KB)) 32KB로 설정
+            /// 설정 이유: 기본값으로는 부족하여 버퍼오버플로우 에러 발생
+            filesystemWatcher.InternalBufferSize = 32768;
 
             filesystemWatcher.NotifyFilter = NotifyFilters.Attributes
                                             | NotifyFilters.CreationTime
@@ -91,7 +96,7 @@ namespace FileChangeWatcher
 
             this.CheckWork();
 
-            // 삭제된 파일,폴더까지 변경점에 넣어야 하는지 의문
+            /// 삭제된 파일,폴더까지 변경점에 넣어야 하는지 의문
             //this.dbms.AddChangeFile(e.FullPath);
         }
 
@@ -160,26 +165,27 @@ namespace FileChangeWatcher
         /// </summary>
         private void TimerRun(Object stateInfo)
         {
-            // 테스트 코드
+            /// 테스트 코드
             Console.WriteLine("Timer Run Start");
 
-            // 플래그 초기화
+            /// 플래그 초기화
             this.isFirstChange = true;
 
-            // 계산
-            //s1.Calculate();
-            //s2.Calculate();
+            /// 계산
+            s1.Calculate();
+            s2.Calculate();
 
-            // DB 초기화
-            // dbms.ResetChangeFileList() 실행 위치 이곳이 맞는가..?
-            //dbms.Init();
+            /// DB 초기화
+            /// dbms.ResetChangeFileList() 실행 위치 이곳이 맞는가..?
+            dbms.Init();
+            Console.WriteLine($"TimeRun_TotalFileNumber - {dbms.TotalFileNumbers}");
             dbms.ResetChangeFileList();
 
-            // 타이머 초기화
+            /// 타이머 초기화
             AutoResetEvent autoResetEvent = (AutoResetEvent)stateInfo;
             autoResetEvent.Set();
 
-            // 테스트 코드
+            /// 테스트 코드
             Console.WriteLine("Timer Run End");
         }
     }
