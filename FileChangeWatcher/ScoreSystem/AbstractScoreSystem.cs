@@ -11,9 +11,15 @@ namespace FileChangeWatcher.ScoreSystem
     abstract class AbstractScoreSystem
     {
         protected int _score = 0;
-        protected bool _isCompleteCalculate = false; // 변수명 바꾸고 싶음
+        protected bool _isCompleteCalculate = false; /// 변수명 바꾸고 싶음
         protected DBMS dbms = new DBMS();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 점수 반환이 다소 난잡?한거 같음 좀 더 생각 필요
+        /// </remarks>
         public int Score
         {
             get 
