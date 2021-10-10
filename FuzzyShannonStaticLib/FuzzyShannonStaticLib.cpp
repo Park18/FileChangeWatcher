@@ -11,8 +11,8 @@
 #include <limits>
 
 
-#define _CRT_NONSTDC_NO_WARNINGS
 #define FFUZZYPP_DECLARATIONS
+#define _CRT_NONSTDC_NO_WARNINGS
 
 
 #include "ffuzzy.hpp"

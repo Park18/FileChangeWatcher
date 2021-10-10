@@ -26,7 +26,7 @@ namespace FileChangeWatcher
 
     class DBMS
     {
-        private string _rootPath = @"D:\Code\Capstone\FileChangeWatcher\FileChangeDataset";
+        private string _rootPath = @"C:\Users\NULL\Desktop\test";
         private string _originFileInfoPath = @"OriginFileInfo.csv";
         private static int _totalFileNumbers = 0;
         private static List<string> _changeFileList = new List<string>();

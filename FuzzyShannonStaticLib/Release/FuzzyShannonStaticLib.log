@@ -1,0 +1,7 @@
+﻿  FuzzyShannonStaticLib.cpp
+C:\Users\NULL\source\repos\Park18\FileChangeWatcher\FuzzyShannonStaticLib\FuzzyShannonStaticLib.cpp(99,2): error C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\NULL\source\repos\Park18\FileChangeWatcher\FuzzyShannonStaticLib\ffuzzypp\digest_data.hpp(535,11): error C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\NULL\source\repos\Park18\FileChangeWatcher\FuzzyShannonStaticLib\ffuzzypp\digest_data.hpp(531): message : 클래스 템플릿 멤버 함수 'bool ffuzzy::digest_data<false,true>::pretty_unsafe(char *) noexcept const'을(를) 컴파일하는 중입니다.
+C:\Users\NULL\source\repos\Park18\FileChangeWatcher\FuzzyShannonStaticLib\FuzzyShannonStaticLib.cpp(170): message : 컴파일되는 함수 템플릿 인스턴스화 'bool ffuzzy::digest_data<false,true>::pretty_unsafe(char *) noexcept const'에 대한 참조를 확인하세요.
+C:\Users\NULL\source\repos\Park18\FileChangeWatcher\FuzzyShannonStaticLib\ffuzzypp\digest_base.hpp(53): message : 컴파일되는 클래스 템플릿 인스턴스화 'ffuzzy::digest_data<false,true>'에 대한 참조를 확인하세요.
+C:\Users\NULL\source\repos\Park18\FileChangeWatcher\FuzzyShannonStaticLib\ffuzzypp\digest.hpp(169): message : 컴파일되는 클래스 템플릿 인스턴스화 'ffuzzy::digest_base<false,true,true>'에 대한 참조를 확인하세요.

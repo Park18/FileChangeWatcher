@@ -30,6 +30,7 @@ namespace FileChangeWatcher
         /// </summary>
         private S1 s1 = new S1();
         private S2 s2 = new S2();
+        private S3 s3 = new S3();
 
         /// <summary>
         /// DBMS 관련
@@ -62,6 +63,23 @@ namespace FileChangeWatcher
 
             filesystemWatcher.IncludeSubdirectories = true;
             filesystemWatcher.EnableRaisingEvents = true;
+
+
+            StreamReader sr = new StreamReader("OriginFileInfo.csv");
+            string str;
+            string[] strItems;
+            if (!sr.EndOfStream)
+            {
+                // 첫줄 읽어서 헤더부분 넘김
+                sr.ReadLine();
+            }
+            while (!sr.EndOfStream)
+            {
+                str = sr.ReadLine();
+                strItems = str.Split(new string[] { ", " }, StringSplitOptions.None);
+                CustomHashTable.loadOriginInfoToHashTable(strItems[0], strItems[1], Double.Parse(strItems[2]));
+            }
+
 
             Console.WriteLine("Press enter to exit");
             Console.ReadLine();
@@ -107,6 +125,10 @@ namespace FileChangeWatcher
             Console.WriteLine($"    Old: {e.OldFullPath}");
             Console.WriteLine($"    New: {e.FullPath}");
             Console.WriteLine($"[Time]: {DateTime.Now.ToString()}");
+
+            CustomHashTable.OriginAndChangePath.Put(e.OldFullPath, e.FullPath);
+            CustomHashTable.ChangeAndOriginPath.Put(e.FullPath, e.OldFullPath);
+
 
             this.CheckWork();
             this.dbms.AddChangeFile(e.FullPath);
@@ -174,6 +196,7 @@ namespace FileChangeWatcher
             // 계산
             //s1.Calculate();
             //s2.Calculate();
+            s3.TestCode();
 
             // DB 초기화
             //dbms.Init();
