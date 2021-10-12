@@ -43,8 +43,7 @@ double LibFuzzyShannon::Shannon(const char* filepath)
 	fopen_s(&fp, filepath, "rb");
 	if (fp == NULL)
 	{
-		std::cout << "에러에요" << std::endl;
-		return false;
+		return 10;
 	}
 	else
 	{
@@ -194,12 +193,12 @@ int LibFuzzyShannon::comparehash(std::string hash1, std::string hash2)
 	if (!decltype(h1.u)::parse(h1.u, first_hash))
 	{
 		fprintf(stderr, "error: failed to parse HASH1.\n");
-		return 1;
+		return 101;
 	}
 	if (!decltype(h2.u)::parse(h2.u, second_hash))
 	{
 		fprintf(stderr, "error: failed to parse HASH2.\n");
-		return 1;
+		return 101;
 	}
 
 	/*
@@ -210,13 +209,13 @@ int LibFuzzyShannon::comparehash(std::string hash1, std::string hash2)
 	if (!h1.d.pretty_unsafe(digestbuf))
 	{
 		fprintf(stderr, "abort: failed to re-stringize HASH1.\n");
-		return 1;
+		return 101;
 	}
 	//printf("HASH1 : %s\n", digestbuf);
 	if (!h2.d.pretty_unsafe(digestbuf))
 	{
 		fprintf(stderr, "abort: failed to re-stringize HASH2.\n");
-		return 1;
+		return 101;
 	}
 	//printf("HASH2 : %s\n", digestbuf);
 
@@ -226,13 +225,13 @@ int LibFuzzyShannon::comparehash(std::string hash1, std::string hash2)
 	if (!h1.d.pretty_unsafe(digestbuf))
 	{
 		fprintf(stderr, "abort: failed to re-stringize HASH1.\n");
-		return 1;
+		return 101;
 	}
 	//printf("NORM1 : %s\n", digestbuf);
 	if (!h2.d.pretty_unsafe(digestbuf))
 	{
 		fprintf(stderr, "abort: failed to re-stringize HASH2.\n");
-		return 1;
+		return 101;
 	}
 	//printf("NORM2 : %s\n", digestbuf);
 

@@ -13,7 +13,7 @@ namespace FileChangeWatcher.ScoreSystem
 
         private List<double> ShannonList = new List<double>();
         private List<double> ChangeShannonList = new List<double>();
-        private List<int> ChangeFuzzyHashList = new List<int>();
+        private List<double> ChangeFuzzyHashList = new List<double>();
         List<DataInfo> TdataInfoList = new List<DataInfo>();
         List<string> TchangeFileList = new List<string> ();
         int NumZeroFuzzyhash = 0;
@@ -83,9 +83,12 @@ namespace FileChangeWatcher.ScoreSystem
                 //object a = CustomHashTable.ChangeGetOriginPath.GetValue(ChangeFilePath);
                 if (ChangeFilePath != null)
                 {
-                    double CFileShannon = (double)FuzzyShannon.Shannon(ChangeFilePath);
-                    ChangeShannonList.Add(CFileShannon);
-                    flagChange = 1;
+                    double CFileShannon = FuzzyShannon.Shannon(ChangeFilePath);
+                    if(CFileShannon != 10)
+                    {
+                        ChangeShannonList.Add(CFileShannon);
+                        flagChange = 1;
+                    }
                 }
             }
             if(flagChange == 1)
@@ -112,11 +115,18 @@ namespace FileChangeWatcher.ScoreSystem
                 {
                     subShannonNum(ChangeFilePath, (string)a);
                     string b = FuzzyShannon.ComputeFuzzyHash(ChangeFilePath);
-                    int score = FuzzyShannon.CompareFuzzyHash((string)CustomHashTable.OriginFuzzyCHT.GetValue(a), b);
-                    if (score == 0)
+                    if(b != "open error")
                     {
-                        NumZeroFuzzyhash++;
-                    }
+                        int score = FuzzyShannon.CompareFuzzyHash((string)CustomHashTable.OriginFuzzyCHT.GetValue(a), b);
+                        if(score != 101)
+                        {
+                            ChangeFuzzyHashList.Add(score);
+                            if (score == 0)
+                            {
+                                NumZeroFuzzyhash++;
+                            }
+                        }                        
+                    }                    
                 }
                 else
                 {
@@ -124,19 +134,23 @@ namespace FileChangeWatcher.ScoreSystem
                     {
                         subShannonNum(ChangeFilePath, ChangeFilePath);
                         string b = FuzzyShannon.ComputeFuzzyHash(ChangeFilePath);
-                        if (CustomHashTable.OriginFuzzyCHT.GetValue(ChangeFilePath) != null)
+                        if(b != "open error")
                         {
-                            int score = FuzzyShannon.CompareFuzzyHash((string)CustomHashTable.OriginFuzzyCHT.GetValue(ChangeFilePath), b);
-                            ChangeFuzzyHashList.Add(score);
-                            if (score == 0)
+                            if (CustomHashTable.OriginFuzzyCHT.GetValue(ChangeFilePath) != null)
                             {
-                                NumZeroFuzzyhash++;
+                                int score = FuzzyShannon.CompareFuzzyHash((string)CustomHashTable.OriginFuzzyCHT.GetValue(ChangeFilePath), b);
+                                if(score != 101)
+                                {
+                                    ChangeFuzzyHashList.Add(score);
+                                    if (score == 0)
+                                    {
+                                        NumZeroFuzzyhash++;
+                                    }
+                                }                                
                             }
                         }
-                        
                     }
                 }
-
             }
             Console.WriteLine("FuzzyHash 연산 결과가 0인 파일 수 : " + NumZeroFuzzyhash);
             Console.WriteLine("Shannon가 1 이상 차이나는 파일 수 : " + NumChangeShannonOne);
@@ -206,7 +220,7 @@ namespace FileChangeWatcher.ScoreSystem
         {
             using (StreamWriter writeFile = new StreamWriter((@"FuzzyHash.csv"), false, System.Text.Encoding.GetEncoding("utf-8")))
             {
-                foreach (int List in ChangeFuzzyHashList)
+                foreach (double List in ChangeFuzzyHashList)
                 {
                     writeFile.WriteLine(List);
                 }

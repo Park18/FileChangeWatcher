@@ -1,1 +1,14 @@
-﻿
+﻿  AssemblyInfo.cpp
+C:\Users\NULL\source\repos\Park18\FileChangeWatcher\CLRFuzzyShannonDLL\AssemblyInfo.cpp(1,1): warning C4005: '__CLR_VER': 매크로 재정의
+C:\Users\NULL\source\repos\Park18\FileChangeWatcher\CLRFuzzyShannonDLL\pch.cpp : message : '__CLR_VER'의 이전 정의를 참조하십시오.
+C:\Users\NULL\source\repos\Park18\FileChangeWatcher\CLRFuzzyShannonDLL\AssemblyInfo.cpp(1,1): warning C4651: 미리 컴파일된 헤더에 대해 '/D__CLR_VER=40804400'을(를) 지정했으나 현재 컴파일에 대해서는 지정하지 않았습니다.
+  CLRFuzzyShannonDLL.cpp
+C:\Users\NULL\source\repos\Park18\FileChangeWatcher\CLRFuzzyShannonDLL\CLRFuzzyShannonDLL.cpp(1,1): warning C4005: '__CLR_VER': 매크로 재정의
+C:\Users\NULL\source\repos\Park18\FileChangeWatcher\CLRFuzzyShannonDLL\pch.cpp : message : '__CLR_VER'의 이전 정의를 참조하십시오.
+C:\Users\NULL\source\repos\Park18\FileChangeWatcher\CLRFuzzyShannonDLL\CLRFuzzyShannonDLL.cpp(1,1): warning C4651: 미리 컴파일된 헤더에 대해 '/D__CLR_VER=40804400'을(를) 지정했으나 현재 컴파일에 대해서는 지정하지 않았습니다.
+C:\Users\NULL\source\repos\Park18\FileChangeWatcher\CLRFuzzyShannonDLL\CLRFuzzyShannonDLL.cpp(53,3): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  코드를 생성하고 있습니다...
+  AssemblyInfo.obj : MSIL 모듈이 발견되었습니다. MSIL에 증분 링크를 사용할 수 없습니다. 전체 링크를 수행하고 있습니다.
+FuzzyShannonStaticLib.lib(FuzzyShannonStaticLib.obj) : warning LNK4075: '/EDITANDCONTINUE'이(가) '/INCREMENTAL:NO' 사양으로 인해 무시됩니다.
+     C:\Users\NULL\source\repos\Park18\FileChangeWatcher\Debug\CLRFuzzyShannonDLL.lib 라이브러리 및 C:\Users\NULL\source\repos\Park18\FileChangeWatcher\Debug\CLRFuzzyShannonDLL.exp 개체를 생성하고 있습니다.
+  CLRFuzzyShannonDLL.vcxproj -> C:\Users\NULL\source\repos\Park18\FileChangeWatcher\Debug\CLRFuzzyShannonDLL.dll

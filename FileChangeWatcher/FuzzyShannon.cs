@@ -18,7 +18,7 @@ namespace FileChangeWatcher
         private static extern int compareHash(string hash1, string hash2);
 
         /// <summary>
-        /// Shannon을 반환하는 메소드
+        /// Shannon을 반환하는 메소드 오류 발생시 10 반환
         /// </summary>
         /// <param name="filePath">Shannon을 계산할 파일 경로</param>
         /// <returns></returns>
@@ -28,7 +28,7 @@ namespace FileChangeWatcher
         }
 
         /// <summary>
-        /// FuzzyHash를 반환하는 메소드
+        /// FuzzyHash를 반환하는 메소드 오류발생 시 "open error" 반환
         /// </summary>
         /// <param name="filePath">FuzzyHash를 계산할 파일 경로</param>
         /// <returns></returns>
@@ -42,7 +42,7 @@ namespace FileChangeWatcher
         }
 
         /// <summary>
-        /// FuzzyHash를 비교하는 메소드
+        /// FuzzyHash를 비교하는 메소드 오류발생 시 101 반환
         /// </summary>
         /// <param name="fuzzyHash1">Fuzzh Hash 1</param>
         /// <param name="fuzzyHash2">Fuzzy Hash 2</param>
