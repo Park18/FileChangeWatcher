@@ -16,7 +16,11 @@ namespace FileChangeWatcher.ScoreSystem
 
         public override void Calculate()
         {
-            InitWrongExtensionDictionary();         
+            InitWrongExtensionDictionary();
+
+            Console.WriteLine($"S2 테스트 결과");
+            foreach (var data in this.wrongExtensionDictionary)
+                Console.WriteLine($"확장자: {data.Key} - 개수: {data.Value}");
         }
 
         /// <summary>

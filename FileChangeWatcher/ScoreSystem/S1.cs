@@ -25,7 +25,9 @@ namespace FileChangeWatcher.ScoreSystem
             {
                 this._isCompleteCalculate = true;
 
-                int percentage = dbms.TotalFileNumbers / dbms.ChangeFileList.Count * 100;
+                int percentage = dbms.ChangeFileList.Count / dbms.TotalFileNumbers * 100;
+                Console.WriteLine($"S1 테스트 결과");
+                Console.WriteLine($"변화율: {percentage}%");
             }
             catch(DivideByZeroException divideException)
             {

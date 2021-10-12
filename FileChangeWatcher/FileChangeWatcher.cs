@@ -13,11 +13,6 @@ namespace FileChangeWatcher
     class FileChangeWatcher
     {
         /// <summary>
-        /// Filesystem 관련
-        /// </summary>
-        private string path = @"C:\Users\NULL\Desktop\test";
-
-        /// <summary>
         /// 타이머 관련
         /// </summary>
         private bool isFirstChange = true;
@@ -30,7 +25,6 @@ namespace FileChangeWatcher
         /// </summary>
         private S1 s1 = new S1();
         private S2 s2 = new S2();
-        private S3 s3 = new S3();
 
         /// <summary>
         /// DBMS 관련
@@ -40,11 +34,16 @@ namespace FileChangeWatcher
         public FileChangeWatcher()
         {
             dbms.Init();
+            Console.WriteLine($"실행 초기화_TotalFileNumber - {dbms.TotalFileNumbers}");
         }
 
         public void Run()
         {
-            var filesystemWatcher = new FileSystemWatcher(path);
+            var filesystemWatcher = new FileSystemWatcher(dbms.RootPath);
+
+            /// FilesystemWatcher 내부버퍼(기본 8192(8KB)) 32KB로 설정
+            /// 설정 이유: 기본값으로는 부족하여 버퍼오버플로우 에러 발생
+            filesystemWatcher.InternalBufferSize = 32768;
 
             filesystemWatcher.NotifyFilter = NotifyFilters.Attributes
                                             | NotifyFilters.CreationTime
@@ -63,23 +62,6 @@ namespace FileChangeWatcher
 
             filesystemWatcher.IncludeSubdirectories = true;
             filesystemWatcher.EnableRaisingEvents = true;
-
-
-            StreamReader sr = new StreamReader("OriginFileInfo.csv");
-            string str;
-            string[] strItems;
-            if (!sr.EndOfStream)
-            {
-                // 첫줄 읽어서 헤더부분 넘김
-                sr.ReadLine();
-            }
-            while (!sr.EndOfStream)
-            {
-                str = sr.ReadLine();
-                strItems = str.Split(new string[] { ", " }, StringSplitOptions.None);
-                CustomHashTable.loadOriginInfoToHashTable(strItems[0], strItems[1], Double.Parse(strItems[2]));
-            }
-
 
             Console.WriteLine("Press enter to exit");
             Console.ReadLine();
@@ -114,7 +96,7 @@ namespace FileChangeWatcher
 
             this.CheckWork();
 
-            // 삭제된 파일,폴더까지 변경점에 넣어야 하는지 의문
+            /// 삭제된 파일,폴더까지 변경점에 넣어야 하는지 의문
             //this.dbms.AddChangeFile(e.FullPath);
         }
 
@@ -125,10 +107,6 @@ namespace FileChangeWatcher
             Console.WriteLine($"    Old: {e.OldFullPath}");
             Console.WriteLine($"    New: {e.FullPath}");
             Console.WriteLine($"[Time]: {DateTime.Now.ToString()}");
-
-            CustomHashTable.OriginAndChangePath.Put(e.OldFullPath, e.FullPath);
-            CustomHashTable.ChangeAndOriginPath.Put(e.FullPath, e.OldFullPath);
-
 
             this.CheckWork();
             this.dbms.AddChangeFile(e.FullPath);
@@ -187,26 +165,27 @@ namespace FileChangeWatcher
         /// </summary>
         private void TimerRun(Object stateInfo)
         {
-            // 테스트 코드
+            /// 테스트 코드
             Console.WriteLine("Timer Run Start");
 
-            // 플래그 초기화
+            /// 플래그 초기화
             this.isFirstChange = true;
 
-            // 계산
-            //s1.Calculate();
-            //s2.Calculate();
-            s3.TestCode();
+            /// 계산
+            s1.Calculate();
+            s2.Calculate();
 
-            // DB 초기화
-            //dbms.Init();
-            //dbms.ResetChangeFileList();
+            /// DB 초기화
+            /// dbms.ResetChangeFileList() 실행 위치 이곳이 맞는가..?
+            dbms.Init();
+            Console.WriteLine($"TimeRun_TotalFileNumber - {dbms.TotalFileNumbers}");
+            dbms.ResetChangeFileList();
 
-            // 타이머 초기화
+            /// 타이머 초기화
             AutoResetEvent autoResetEvent = (AutoResetEvent)stateInfo;
             autoResetEvent.Set();
 
-            // 테스트 코드
+            /// 테스트 코드
             Console.WriteLine("Timer Run End");
         }
     }
