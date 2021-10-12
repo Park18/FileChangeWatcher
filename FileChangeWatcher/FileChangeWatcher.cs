@@ -25,6 +25,7 @@ namespace FileChangeWatcher
         /// </summary>
         private S1 s1 = new S1();
         private S2 s2 = new S2();
+        private S3 s3 = new S3();
 
         /// <summary>
         /// DBMS 관련
@@ -43,7 +44,7 @@ namespace FileChangeWatcher
 
             /// FilesystemWatcher 내부버퍼(기본 8192(8KB)) 32KB로 설정
             /// 설정 이유: 기본값으로는 부족하여 버퍼오버플로우 에러 발생
-            filesystemWatcher.InternalBufferSize = 32768;
+            filesystemWatcher.InternalBufferSize = 65536;
 
             filesystemWatcher.NotifyFilter = NotifyFilters.Attributes
                                             | NotifyFilters.CreationTime
@@ -108,6 +109,7 @@ namespace FileChangeWatcher
             Console.WriteLine($"    New: {e.FullPath}");
             Console.WriteLine($"[Time]: {DateTime.Now.ToString()}");
 
+            CustomHashTable.ChangeGetOriginPath.Put(e.FullPath, e.OldFullPath);
             this.CheckWork();
             this.dbms.AddChangeFile(e.FullPath);
         }
@@ -174,6 +176,7 @@ namespace FileChangeWatcher
             /// 계산
             s1.Calculate();
             s2.Calculate();
+            s3.Calculate();
 
             /// DB 초기화
             /// dbms.ResetChangeFileList() 실행 위치 이곳이 맞는가..?
