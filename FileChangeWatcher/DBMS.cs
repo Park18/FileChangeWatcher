@@ -26,12 +26,34 @@ namespace FileChangeWatcher
 
     class DBMS
     {
-        private string _rootPath = @"C:\Users\NULL\Desktop\sample";
+        private string iniFile = "Setting.ini";
+        private string _rootPath = @"C:\Users\NULL";
         private string _originFileInfoPath = @"OriginFileInfo.csv";
         private static List<string> _changeFileList = new List<string>();
         private static List<DataInfo> dataInfoList = new List<DataInfo>();
 
-        public string RootPath
+        public DBMS()
+        {
+            try
+            {
+                var iniFile = new IniFile();
+                iniFile.Load(this.iniFile);
+                _rootPath = iniFile["Setting"]["RootPath"].ToString();
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("[Error]: Setting.ini 파일을 찾을 수 없습니다.");
+                Console.WriteLine("[System]: Setting.ini 파일을 재생성합니다.");
+
+                this.InitSettingFile(_rootPath);
+
+                Environment.Exit(0);
+            }
+
+            this.Init();
+        }
+
+        public string RootPath 
         {
             get { return _rootPath; }
         }
@@ -145,6 +167,13 @@ namespace FileChangeWatcher
                 return true;
 
             return false;
+        }
+
+        public void InitSettingFile(string rootPath)
+        {
+            var iniFile = new IniFile();
+            iniFile["Setting"]["RootPath"] = rootPath;
+            iniFile.Save("Setting.ini");
         }
 
         public void TestCode()

@@ -34,38 +34,50 @@ namespace FileChangeWatcher
 
         public FileChangeWatcher()
         {
-            dbms.Init();
-            Console.WriteLine($"실행 초기화_TotalFileNumber - {dbms.TotalFileNumbers}");
+            Console.WriteLine($"[실행 초기화 전체 파일] - {dbms.TotalFileNumbers}");
         }
 
         public void Run()
         {
-            var filesystemWatcher = new FileSystemWatcher(dbms.RootPath);
+            try
+            {
+                var filesystemWatcher = new FileSystemWatcher(dbms.RootPath);
 
-            /// FilesystemWatcher 내부버퍼(기본 8192(8KB)) 32KB로 설정
-            /// 설정 이유: 기본값으로는 부족하여 버퍼오버플로우 에러 발생
-            filesystemWatcher.InternalBufferSize = 65536;
+                /// FilesystemWatcher 내부버퍼(기본 8192(8KB)) 32KB로 설정
+                /// 설정 이유: 기본값으로는 부족하여 버퍼오버플로우 에러 발생
+                filesystemWatcher.InternalBufferSize = 65536;
 
-            filesystemWatcher.NotifyFilter = NotifyFilters.Attributes
-                                            | NotifyFilters.CreationTime
-                                            | NotifyFilters.DirectoryName
-                                            | NotifyFilters.FileName
-                                            | NotifyFilters.LastAccess
-                                            | NotifyFilters.LastWrite
-                                            | NotifyFilters.Security
-                                            | NotifyFilters.Size;
+                filesystemWatcher.NotifyFilter = NotifyFilters.Attributes
+                                                | NotifyFilters.CreationTime
+                                                | NotifyFilters.DirectoryName
+                                                | NotifyFilters.FileName
+                                                | NotifyFilters.LastAccess
+                                                | NotifyFilters.LastWrite
+                                                | NotifyFilters.Security
+                                                | NotifyFilters.Size;
 
-            filesystemWatcher.Changed += OnChanged;
-            filesystemWatcher.Created += OnCreated;
-            filesystemWatcher.Deleted += OnDeleted;
-            filesystemWatcher.Renamed += OnRenamed;
-            filesystemWatcher.Error += OnError;
+                filesystemWatcher.Changed += OnChanged;
+                filesystemWatcher.Created += OnCreated;
+                filesystemWatcher.Deleted += OnDeleted;
+                filesystemWatcher.Renamed += OnRenamed;
+                filesystemWatcher.Error += OnError;
 
-            filesystemWatcher.IncludeSubdirectories = true;
-            filesystemWatcher.EnableRaisingEvents = true;
+                filesystemWatcher.IncludeSubdirectories = true;
+                filesystemWatcher.EnableRaisingEvents = true;
 
-            Console.WriteLine("Press enter to exit");
-            Console.ReadLine();
+                Console.WriteLine("Press enter to exit");
+                Console.ReadLine();
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("[Error]: 경로를 찾을 수 없습니다.");
+                Console.WriteLine("[System]: 경로를 다시 설정해주세요");
+                Console.Write("[Path] <- ");
+                dbms.InitSettingFile(Console.ReadLine());
+
+                Console.WriteLine("[System]: 프로그램을 다시 실행시켜주십시오.");
+            }
+
         }
 
         private void OnChanged(object sender, FileSystemEventArgs e)
