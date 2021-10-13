@@ -88,7 +88,7 @@ namespace FileChangeWatcher.ScoreSystem
                 case ".ini":
                 case ".iso":
                 case ".jar":
-                case ".Jpg":
+                case ".jpg":
                 case ".jpeg":
                 case ".m4a":
                 case ".mdb":
