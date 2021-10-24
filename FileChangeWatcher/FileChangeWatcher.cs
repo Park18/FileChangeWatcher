@@ -23,9 +23,7 @@ namespace FileChangeWatcher
         /// <summary>
         /// ScoreSystem 관련
         /// </summary>
-        private S1 s1 = new S1();
-        private S2 s2 = new S2();
-        private S3 s3 = new S3();
+        private ScoreSystem.ScoreSystem scoreSystem = new ScoreSystem.ScoreSystem();
 
         /// <summary>
         /// DBMS 관련
@@ -34,7 +32,7 @@ namespace FileChangeWatcher
 
         public FileChangeWatcher()
         {
-            Console.WriteLine($"[실행 초기화 전체 파일] - {dbms.TotalFileNumbers}");
+            Console.WriteLine($"[실행 초기화 전체 파일] - {dbms.TotalFilesCount}");
         }
 
         public void Run()
@@ -70,12 +68,12 @@ namespace FileChangeWatcher
             }
             catch (ArgumentException)
             {
-                Console.WriteLine("[Error]: 경로를 찾을 수 없습니다.");
-                Console.WriteLine("[System]: 경로를 다시 설정해주세요");
+                Console.WriteLine("[Error] 경로를 찾을 수 없습니다.");
+                Console.WriteLine("[System] 경로를 다시 설정해주세요");
                 Console.Write("[Path] <- ");
                 dbms.InitSettingFile(Console.ReadLine());
 
-                Console.WriteLine("[System]: 프로그램을 다시 실행시켜주십시오.");
+                Console.WriteLine("[System] 프로그램을 다시 실행시켜주십시오.");
             }
 
         }
@@ -186,14 +184,12 @@ namespace FileChangeWatcher
             this.isFirstChange = true;
 
             /// 계산
-            s1.Calculate();
-            s2.Calculate();
-            s3.Calculate();
+            scoreSystem.Run();
 
             /// DB 초기화
             /// dbms.ResetChangeFileList() 실행 위치 이곳이 맞는가..?
             dbms.Init();
-            Console.WriteLine($"TimeRun_TotalFileNumber - {dbms.TotalFileNumbers}");
+            Console.WriteLine($"TimeRun_TotalFileNumber - {dbms.TotalFilesCount}");
             dbms.ResetChangeFileList();
 
             /// 타이머 초기화
