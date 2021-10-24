@@ -1,2 +1,3 @@
-﻿  FuzzyShannonStaticLib.cpp
-  FuzzyShannonStaticLib.vcxproj -> C:\Users\NULL\source\repos\Park18\FileChangeWatcher\Release\FuzzyShannonStaticLib.lib
+﻿  pch.cpp
+  FuzzyShannonStaticLib.cpp
+  FuzzyShannonStaticLib.vcxproj -> D:\Code\Capstone\FileChangeWatcher\Release\FuzzyShannonStaticLib.lib

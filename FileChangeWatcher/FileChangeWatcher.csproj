@@ -58,16 +58,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomHashTable.cs" />
     <Compile Include="DBMS.cs" />
     <Compile Include="FuzzyShannon.cs" />
     <Compile Include="Ini.cs" />
-    <Compile Include="ScoreSystem\AbstractScoreSystem.cs" />
-    <Compile Include="ScoreSystem\S1.cs" />
-    <Compile Include="ScoreSystem\S2.cs" />
+    <Compile Include="ScoreSystem\Core\AbstractScoreSystem.cs" />
+    <Compile Include="ScoreSystem\Core\S1.cs" />
+    <Compile Include="ScoreSystem\Core\S2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FileChangeWatcher.cs" />
-    <Compile Include="ScoreSystem\S3.cs" />
+    <Compile Include="ScoreSystem\Core\S3.cs" />
+    <Compile Include="ScoreSystem\ScoreSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
