@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace FileChangeWatcher.ScoreSystem
+namespace FileChangeWatcher.ScoreSystem.Core
 {
     class S3 : AbstractScoreSystem
     {
@@ -30,6 +30,16 @@ namespace FileChangeWatcher.ScoreSystem
             TestCode();
         }
 
+        protected override void PrintResult(double percentage)
+        {
+            ///<example>
+            ///<code>
+            /// Console.WriteLine($"S3 테스트 결과");
+            /// Console.WriteLine($"변화율: {percentage * 100}%");
+            /// Console.WriteLine($"점수: {this._score}점");
+            ///</code>
+            ///</example>
+        }
 
         /// <summary>
         /// 표준 편차 계산
@@ -229,7 +239,11 @@ namespace FileChangeWatcher.ScoreSystem
 
     }
 
-    public class CustomHashTable
+    /// 별도로 클래스 만듬
+    /// 이유: 
+    ///     1. ScoreSystem 구조 변경 -> FileChangeWatcher에서 에러 발생
+    ///     2. S3라는 클래스랑 맞지 않는거 같음, 클래스명과 비슷한 기능을 하는게 있어야 한다고 생각함
+    /*public class CustomHashTable
     {
         //원본 퍼지 해시테이블
         public static CustomHashTable OriginFuzzyCHT = new CustomHashTable(30);
@@ -381,6 +395,6 @@ namespace FileChangeWatcher.ScoreSystem
             CustomHashTable.OriginFuzzyCHT.Put(key, value1);
             CustomHashTable.OriginShannoCHT.Put(key, value2);
         }
-    }
+    }*/
 
 }

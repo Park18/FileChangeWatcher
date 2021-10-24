@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 using FileChangeWatcher;
 
-namespace FileChangeWatcher.ScoreSystem
+namespace FileChangeWatcher.ScoreSystem.Core
 {
     abstract class AbstractScoreSystem
     {
         protected int _score = 0;
-        protected bool _isCompleteCalculate = false; /// 변수명 바꾸고 싶음
         protected DBMS dbms = new DBMS();
 
         /// <summary>
@@ -22,21 +21,18 @@ namespace FileChangeWatcher.ScoreSystem
         /// </remarks>
         public int Score
         {
-            get 
-            {
-                if (this._isCompleteCalculate)
-                {
-                    this._isCompleteCalculate = false;
-                    return this._score;
-                }
-                else
-                    return -1;
-            }
+            get { return this._score; }
         }
 
         /// <summary>
         /// 점수를 계산하는 메소드
         /// </summary>
         public abstract void Calculate();
+
+        /// <summary>
+        /// 결과 출력 메소드
+        /// </summary>
+        /// <param name="percentage">백분율</param>
+        protected abstract void PrintResult(double percentage);
     }
 }

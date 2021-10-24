@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileChangeWatcher.ScoreSystem
+namespace FileChangeWatcher.ScoreSystem.Core
 {
     /// <summary>
     /// S2 점수 클래스
@@ -13,14 +13,32 @@ namespace FileChangeWatcher.ScoreSystem
     class S2 : AbstractScoreSystem
     {
         private Dictionary<string, int> wrongExtensionDictionary = new Dictionary<string, int>();
+        private const double Threshold = 0.95;
 
         public override void Calculate()
         {
             InitWrongExtensionDictionary();
 
-            Console.WriteLine($"S2 테스트 결과");
+            // 최대로 많이 변한 확장자
+            double maxExtensionCount = wrongExtensionDictionary.Values.ToList().Count;
+            double percentage = maxExtensionCount / dbms.TotalFilesCount;
+
+            if(percentage >= Threshold)
+                _score = 2;
+            else
+                _score = 0;
+
+            this.PrintResult(percentage);
+        }
+
+        protected override void PrintResult(double percentage)
+        {
+            Console.WriteLine($"[System] S2 테스트 결과");
             foreach (var data in this.wrongExtensionDictionary)
-                Console.WriteLine($"확장자: {data.Key} - 개수: {data.Value}");
+                Console.WriteLine($"[System] 확장자: {data.Key} - 개수: {data.Value}");
+
+            Console.WriteLine($"[System] 변화율: {percentage * 100}%");
+            Console.WriteLine($"[System] 점수: {this._score}점");
         }
 
         /// <summary>
@@ -41,6 +59,7 @@ namespace FileChangeWatcher.ScoreSystem
                     this.wrongExtensionDictionary.Add(extension, 1);
             }
         }
+
 
         /// <summary>
         /// 올바른 확장자인지 확인하는 메소드
@@ -166,16 +185,6 @@ namespace FileChangeWatcher.ScoreSystem
             }
 
             return result;
-        }
-
-        public void TestCode()
-        {
-            this.InitWrongExtensionDictionary();
-
-            foreach (var value in this.wrongExtensionDictionary)
-            {
-                Console.WriteLine($"잘못된 확장자 확인: {value.Key} - {value.Value}");
-            }
         }
     }
 
