@@ -27,7 +27,7 @@ namespace FileChangeWatcher
     class DBMS
     {
         private string iniFile = "Setting.ini";
-        private string _rootPath = @"C:\Users\NULL";
+        private string _rootPath = @"C:\Users\admin";
         private string _originFileInfoPath = @"OriginFileInfo.csv";
         private static List<string> _changeFileList = new List<string>();
         private static List<DataInfo> dataInfoList = new List<DataInfo>();
@@ -58,7 +58,7 @@ namespace FileChangeWatcher
             get { return _rootPath; }
         }
 
-        public int TotalFileNumbers
+        public int TotalFilesCount
         {
             get { return dataInfoList.Count; }
         }
