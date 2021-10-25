@@ -16,29 +16,33 @@ namespace FileChangeWatcher.ScoreSystem.Core
         private List<double> ChangeFuzzyHashList = new List<double>();
         List<DataInfo> TdataInfoList = new List<DataInfo>();
         List<string> TchangeFileList = new List<string> ();
+        private const double FuzzyhashThreshold = 0.8;
+        private const double ShannonThreshold = 0.25;
+        private double Origin_standard_deviation;
+        private double Change_standard_deviation;
         int NumZeroFuzzyhash = 0;
-        int NumChangeShannonOne = 0;
-        int NumChangeShannonPE = 0;
-        int NumChangeShannonPS = 0;
-        int NumChangeShannonPF = 0;
-        int NumChangeShannonPTwo = 0;
-        int NumChangeShannonPOne = 0;
 
 
         public override void Calculate()
         {
-            TestCode();
+            OriginShannonStandardDeviation();
+            loadShannoninChangeAndOriginPath();
+            double percentage = (double)NumZeroFuzzyhash / TchangeFileList.Count();
+            if (percentage >= FuzzyhashThreshold || Change_standard_deviation <= ShannonThreshold)
+                _score = 5;
+            else
+                _score = 0;
+            this.PrintResult(percentage);
+
         }
 
         protected override void PrintResult(double percentage)
         {
-            ///<example>
-            ///<code>
-            /// Console.WriteLine($"S3 테스트 결과");
-            /// Console.WriteLine($"변화율: {percentage * 100}%");
-            /// Console.WriteLine($"점수: {this._score}점");
-            ///</code>
-            ///</example>
+            Console.WriteLine($"[System] S3 테스트 결과");
+            Console.WriteLine($"[System] FuzzyHash 0 비율: {percentage * 100}%");
+            Console.WriteLine($"[System] 표준 편차: {Change_standard_deviation}");
+            Console.WriteLine($"[System] 점수: {this._score}점");
+
         }
 
         /// <summary>
@@ -55,8 +59,8 @@ namespace FileChangeWatcher.ScoreSystem.Core
 
         public void TestCode()
         {
-            OriginShannonStandardDeviation();
-            loadShannoninChangeAndOriginPath();
+            
+            
 
 
         }
@@ -74,8 +78,8 @@ namespace FileChangeWatcher.ScoreSystem.Core
                 CustomHashTable.loadOriginInfoToHashTable(num.Path, num.Fuzzy, num.Shannon);
             }
             ShannonList = TdataInfoList.Select(x => x.Shannon).ToList();
-            double standard_deviation = standardDeviation(ShannonList);
-            Console.WriteLine("초기 파일들의 Shannon 표준 편차는 " + standard_deviation);
+            Origin_standard_deviation = standardDeviation(ShannonList);
+            //Console.WriteLine("초기 파일들의 Shannon 표준 편차는 " + Origin_standard_deviation);
         }
 
 
@@ -103,8 +107,8 @@ namespace FileChangeWatcher.ScoreSystem.Core
             }
             if(flagChange == 1)
             {
-                double standar_deviation = standardDeviation(ChangeShannonList);
-                Console.WriteLine("변조 파일들의 Shannon 표준 편차는 " + standar_deviation);
+                Change_standard_deviation = standardDeviation(ChangeShannonList);
+                //Console.WriteLine("변조 파일들의 Shannon 표준 편차는 " + Change_standard_deviation);
 
                 subNums();
             }
@@ -162,13 +166,7 @@ namespace FileChangeWatcher.ScoreSystem.Core
                     }
                 }
             }
-            Console.WriteLine("FuzzyHash 연산 결과가 0인 파일 수 : " + NumZeroFuzzyhash);
-            Console.WriteLine("Shannon가 1 이상 차이나는 파일 수 : " + NumChangeShannonOne);
-            Console.WriteLine("Shannon가 0.8 이상 차이나는 파일 수 : " + NumChangeShannonPE);
-            Console.WriteLine("Shannon가 0.6 이상 차이나는 파일 수 : " + NumChangeShannonPS);
-            Console.WriteLine("Shannon가 0.4 이상 차이나는 파일 수 : " + NumChangeShannonPF);
-            Console.WriteLine("Shannon가 0.2 이상 차이나는 파일 수 : " + NumChangeShannonPTwo);
-            Console.WriteLine("Shannon가 0.1 이상 차이나는 파일 수 : " + NumChangeShannonPOne);
+            //Console.WriteLine("FuzzyHash 연산 결과가 0인 파일 수 : " + NumZeroFuzzyhash);
 
             CreateFuzzyHashCSV();
             CreateShannonCSV();
@@ -187,31 +185,6 @@ namespace FileChangeWatcher.ScoreSystem.Core
                 decimal b = (decimal)(double)CustomHashTable.OriginShannoCHT.GetValue(OriginPath);
                 decimal d = (decimal)(double)FuzzyShannon.Shannon(ChangePath);
                 decimal c = Math.Abs(b - d);
-                if((double)c >= 0.1)
-                {
-                    NumChangeShannonPOne++;
-                    if ((double)c >= 0.2)
-                    {
-                        NumChangeShannonPTwo++;
-                        if ((double)c >= 0.4)
-                        {
-                            NumChangeShannonPF++;
-                            if ((double)c >= 0.6)
-                            {
-                                NumChangeShannonPS++;
-                                if ((double)c >= 0.8)
-                                {
-                                    NumChangeShannonPE++;
-                                    if ((double)c >= 1)
-                                    {
-                                        NumChangeShannonOne++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                }
             }
         }
 
