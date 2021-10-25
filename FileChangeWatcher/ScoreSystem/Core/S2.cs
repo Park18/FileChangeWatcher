@@ -20,15 +20,29 @@ namespace FileChangeWatcher.ScoreSystem.Core
             InitWrongExtensionDictionary();
 
             // 최대로 많이 변한 확장자
-            double maxExtensionCount = wrongExtensionDictionary.Values.ToList().Count;
-            double percentage = maxExtensionCount / dbms.TotalFilesCount;
+            try
+            {
+                double maxExtensionCount = wrongExtensionDictionary.Values.ToList().Max();
+                double percentage = maxExtensionCount / dbms.TotalFilesCount;
 
-            if(percentage >= Threshold)
-                _score = 2;
-            else
-                _score = 0;
+                if(percentage >= Threshold)
+                    _score = 2;
+                else
+                    _score = 0;
 
-            this.PrintResult(percentage);
+                this.PrintResult(percentage);
+            }
+            catch(InvalidOperationException)
+            {
+                this.PrintResult();
+            }
+        }
+
+        private void PrintResult()
+        {
+            Console.WriteLine("[System] S2 테스트 결과");
+            Console.WriteLine("[Error] 비정상 확장자가 없습니다.");
+            Console.WriteLine($"[System] 점수: {this._score}점");
         }
 
         protected override void PrintResult(double percentage)
