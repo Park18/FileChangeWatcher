@@ -27,7 +27,8 @@ namespace FileChangeWatcher.ScoreSystem.Core
             {
                 double percentage = (double)dbms.ChangeFileList.Count / dbms.TotalFilesCount;
 
-                if (dbms.ChangeFileList.Count > dbms.TotalFilesCount + 1)
+                /// 파일 + .lock + 감염 txt 파일 
+                if (dbms.ChangeFileList.Count > dbms.TotalFilesCount + 2)
                 {
                     this._score = 0;
                     this.PrintResult();
