@@ -4,3 +4,8 @@
 # 프로젝트 설정
 * .NET Framework 4.7.2
 * Visual Studio 2019
+
+# 빌드 순서
+1. FuzzyShannonStaticLib
+2. CLRFuzzyShannonDLL
+3. FileChangeWatcher
