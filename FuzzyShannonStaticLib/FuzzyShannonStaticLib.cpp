@@ -18,6 +18,8 @@
 #include "ffuzzy.hpp"
 using namespace ffuzzy;
 
+int binary_num = 20;
+
 // 파일 크기 최적화
 #define OPTIMIZE_CONSTANT_FILE_SIZE
 
@@ -33,12 +35,24 @@ typedef union
 	digest_long_t d;
 } unified_digest_long_t;
 
+
+void LibFuzzyShannon::setByte(int byte)
+{
+	if (byte < 1)
+		binary_num = 1;
+	else if (byte > 64)
+	{
+		binary_num = 64;
+	}
+	else
+		binary_num = byte;
+}
+
 double LibFuzzyShannon::Shannon(const char* filepath)
 {
 	FILE* fp = NULL;
 	int fsize = 0;
 	char* read_buf = NULL;
-	int binary_num = 20;
 
 	fopen_s(&fp, filepath, "rb");
 	if (fp == NULL)

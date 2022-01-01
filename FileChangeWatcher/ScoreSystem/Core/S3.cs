@@ -13,6 +13,7 @@ namespace FileChangeWatcher.ScoreSystem.Core
 
         private List<double> ShannonList = new List<double>();
         private List<double> ChangeShannonList = new List<double>();
+        private List<double> ChangeSDShannonList = new List<double>();
         private List<double> ChangeFuzzyHashList = new List<double>();
         List<DataInfo> TdataInfoList = new List<DataInfo>();
         List<string> TchangeFileList = new List<string> ();
@@ -43,6 +44,7 @@ namespace FileChangeWatcher.ScoreSystem.Core
             Console.WriteLine($"[System] 표준 편차: {Change_standard_deviation}");
             Console.WriteLine($"[System] 점수: {this._score}점");
 
+
         }
 
         /// <summary>
@@ -57,13 +59,6 @@ namespace FileChangeWatcher.ScoreSystem.Core
             return Math.Sqrt((sum) / (sequence.Count() - 1));
         }
 
-        public void TestCode()
-        {
-            
-            
-
-
-        }
 
 
         /// <summary>
@@ -79,7 +74,7 @@ namespace FileChangeWatcher.ScoreSystem.Core
             }
             ShannonList = TdataInfoList.Select(x => x.Shannon).ToList();
             Origin_standard_deviation = standardDeviation(ShannonList);
-            //Console.WriteLine("초기 파일들의 Shannon 표준 편차는 " + Origin_standard_deviation);
+            Console.WriteLine("초기 파일들의 Shannon 표준 편차는 " + Origin_standard_deviation);
         }
 
 
@@ -95,20 +90,25 @@ namespace FileChangeWatcher.ScoreSystem.Core
             foreach (string ChangeFilePath in TchangeFileList)
             {
                 //object a = CustomHashTable.ChangeGetOriginPath.GetValue(ChangeFilePath);
-                if (ChangeFilePath != null)
+                if (CustomHashTable.ChangeGetOriginPath.GetValue(ChangeFilePath) != null)
                 {
                     double CFileShannon = FuzzyShannon.Shannon(ChangeFilePath);
                     if(CFileShannon != 10)
                     {
+                        Console.WriteLine(CFileShannon);
                         ChangeShannonList.Add(CFileShannon);
+                        if(CFileShannon != 0)
+                        {
+                            ChangeSDShannonList.Add(CFileShannon);
+                        }
                         flagChange = 1;
                     }
                 }
             }
             if(flagChange == 1)
             {
-                Change_standard_deviation = standardDeviation(ChangeShannonList);
-                //Console.WriteLine("변조 파일들의 Shannon 표준 편차는 " + Change_standard_deviation);
+                Change_standard_deviation = standardDeviation(ChangeSDShannonList);
+                Console.WriteLine("변조 파일들의 Shannon 표준 편차는 " + Change_standard_deviation);
 
                 subNums();
             }

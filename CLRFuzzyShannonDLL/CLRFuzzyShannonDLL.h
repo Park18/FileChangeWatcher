@@ -12,6 +12,7 @@ namespace CLRFuzzyShannonDLL {
 	public:
 		FuzzyShannon();
 		virtual ~FuzzyShannon();
+		void setByte(int byte);
 		double Shannon(const char* filepath);
 		std::string computehash(const char* filepath);
 		int comparehash(std::string hash1, std::string hash2);
@@ -50,6 +51,7 @@ namespace CLRFuzzyShannonDLL {
 	*/
 
 	extern "C" {
+		__declspec(dllexport) void setByte(int byte);
 		__declspec(dllexport) double computeShannon(const char* filepath);
 		__declspec(dllexport) char* computeHash(const char* filepath);
 		__declspec(dllexport) int compareHash(const char* hash1, const char* hash2);

@@ -21,7 +21,9 @@ namespace FileChangeWatcher
             //dbms.TestCode();
             //s1.TestCode();
             //s2.TestCode();
-
+            Console.WriteLine("Shannon 엔트로피의 계산 영역 Byte를 입력해주세요 :");
+            string getShannonByte = Console.ReadLine();
+            FuzzyShannon.setShannonByte(int.Parse(getShannonByte));
             /// Program 테스트
             FileChangeWatcher fileChangeWatcher = new FileChangeWatcher();
             fileChangeWatcher.Run();

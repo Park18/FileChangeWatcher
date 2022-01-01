@@ -53,6 +53,31 @@ namespace FileChangeWatcher
             this.Init();
         }
 
+        /// <summary>
+        /// Shannon 엔트로피 파이트별 계산을 위한 함수 DBMS(int 바이트)
+        /// </summary>
+        /// <param name="ShannonByte"></param>
+        public DBMS(int ShannonByte)
+        {
+            try
+            {
+                var iniFile = new IniFile();
+                iniFile.Load(this.iniFile);
+                _rootPath = iniFile["Setting"]["RootPath"].ToString();
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("[Error]: Setting.ini 파일을 찾을 수 없습니다.");
+                Console.WriteLine("[System]: Setting.ini 파일을 재생성합니다.");
+
+                this.InitSettingFile(_rootPath);
+
+                Environment.Exit(0);
+            }
+            _originFileInfoPath = @"OriginFileInfo.csv" + ShannonByte;
+            this.Init();
+        }
+
         public string RootPath 
         {
             get { return _rootPath; }

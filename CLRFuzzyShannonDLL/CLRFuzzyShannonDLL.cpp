@@ -24,6 +24,11 @@ namespace CLRFuzzyShannonDLL
 		}
 	}
 
+	void FuzzyShannon::setByte(int byte)
+	{
+		m_pLibFuzzyShannon->setByte(byte);
+	}
+
 	double FuzzyShannon::Shannon(const char* filepath)
 	{
 		return (m_pLibFuzzyShannon->Shannon(filepath));
@@ -40,10 +45,16 @@ namespace CLRFuzzyShannonDLL
 	}
 
 
+	extern "C" __declspec(dllexport) void setByte(int byte)
+	{
+		FuzzyShannon::FuzzyShannon().setByte(byte);
+	}
+
 	extern "C" __declspec(dllexport) double computeShannon(const char* filepath)
 	{
 		return FuzzyShannon::FuzzyShannon().Shannon(filepath);
 	}
+
 	extern "C" __declspec(dllexport) char* computeHash(const char* filepath)
 	{
 
