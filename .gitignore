@@ -1,16 +1,19 @@
-# FileChangeWatcher
+# Solution .gitignore
 /.vs
 /FileChangeDataset
-
-# FileChangeWatcher\FileChangeWatcher
-*/bin
-*/obj
-*csproj.user
-
 /Debug
 /Release
-*/Debug
-*/Release
-*.vcxproj.filters
-*.vcxproj.user
+/bin
+/obj
 
+# RansomwareWatcher Project .gitignore
+RansomwareWatcher/bin
+RansomwareWatcher/obj
+
+# CLRFuzzyShannonDLL Project .gitignore
+CLRFuzzyShannonDLL/Debug
+CLRFuzzyShannonDLL/Release
+
+# FuzzyShannonStaticLib Project .gitignore
+FuzzyShannonStaticLib/Debug
+FuzzyShannonStaticLib/Release
